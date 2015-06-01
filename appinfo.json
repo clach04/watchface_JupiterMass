@@ -1,0 +1,35 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "clach04",
+    "longName": "JupiterMass",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/n7logo.png",
+                "name": "IMAGE_N7LOGO",
+                "type": "png"
+            },
+            {
+                "characterRegex": "[0-9:]",
+                "file": "fonts/jupiter.ttf",
+                "name": "FONT_JUPITER_60",
+                "type": "font"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "JupiterMass",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "2eaca376-eeba-4b8e-939e-2502aea18fb0",
+    "versionLabel": "0.1",
+    "watchapp": {
+        "watchface": true
+    }
+}

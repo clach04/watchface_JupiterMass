@@ -99,7 +99,7 @@ static void setup_bluetooth(Window *window)
 static void cleanup_bluetooth()
 {
     bluetooth_connection_service_unsubscribe();
-    text_layer_destroy(s_battery_layer);
+    text_layer_destroy(s_bluetooth_layer);
 }
 
 static void handle_battery(BatteryChargeState charge_state) {

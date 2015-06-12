@@ -44,6 +44,7 @@
 #define FONT_NAME RESOURCE_ID_FONT_JUPITER_60
 
 #define CLOCK_POS GRect(0, 52, 144, 168) /* probably taller than really needed */
+#define BT_POS GRect(0, 120, 144, 168) /* probably taller than really needed */
 #define DATE_POS GRect(0, 140, 144, 168) /* probably taller than really needed */
 #define BAT_POS GRect(0, 140, 144, 168) /* probably taller than really needed */
 
@@ -52,6 +53,7 @@ static Window    *s_main_window;
 static TextLayer *s_time_layer;
 static TextLayer *s_date_layer;
 static TextLayer *s_battery_layer;
+static TextLayer *s_bluetooth_layer;
 
 static GFont       s_time_font;
 static GFont       s_date_font;
@@ -65,6 +67,40 @@ static int last_day = -1;
 #define MAX_TIME_STR "00:00"
 #define MAX_BAT_STR "Bat: ??%"
 
+
+static void handle_bluetooth(bool connected)
+{
+    /* TODO use gfx not text */
+    /* TODO vibrate/rumble on disconnect event */
+    if (connected)
+    {
+        text_layer_set_text(s_bluetooth_layer, "");
+    }
+    else
+    {
+        text_layer_set_text(s_bluetooth_layer, "BT Disconnected");
+    }
+}
+
+static void setup_bluetooth(Window *window)
+{
+    s_bluetooth_layer = text_layer_create(BT_POS);
+    text_layer_set_text_color(s_bluetooth_layer, FONT_BAT_COLOR);
+    text_layer_set_background_color(s_bluetooth_layer, GColorClear);
+    text_layer_set_font(s_bluetooth_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+    text_layer_set_text_alignment(s_bluetooth_layer, GTextAlignmentCenter);
+    layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_bluetooth_layer));
+    text_layer_set_text(s_bluetooth_layer, "");
+
+    handle_bluetooth(bluetooth_connection_service_peek());
+    bluetooth_connection_service_subscribe(handle_bluetooth);
+}
+
+static void cleanup_bluetooth()
+{
+    bluetooth_connection_service_unsubscribe();
+    text_layer_destroy(s_battery_layer);
+}
 
 static void handle_battery(BatteryChargeState charge_state) {
     static char battery_text[] = MAX_BAT_STR;
@@ -175,6 +211,8 @@ static void main_window_load(Window *window) {
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
     text_layer_set_text(s_battery_layer, MAX_BAT_STR);
 
+    setup_bluetooth(window);
+
     /* Make sure the time is displayed from the start */
     update_time();
     /* Ensure battery status is displayed from the start */
@@ -182,6 +220,7 @@ static void main_window_load(Window *window) {
 }
 
 static void main_window_unload(Window *window) {
+    cleanup_bluetooth();
     /* Unload GFonts */
     fonts_unload_custom_font(s_time_font);
 
@@ -200,9 +239,6 @@ static void main_window_unload(Window *window) {
     /* unsubscribe events */
     tick_timer_service_unsubscribe();
     battery_state_service_unsubscribe();
-    /*
-    bluetooth_connection_service_unsubscribe();
-    */
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {

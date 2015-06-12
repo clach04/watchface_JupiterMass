@@ -1,6 +1,8 @@
 /*
 ** Jupiter Mass watch face - Color or Mono
 **
+**    https://github.com/clach04/watchface_JupiterMass
+**
 ** Acknowledgements
 **   * This is only a slightly modified version of Pebble Watchface tutorial
 **       * http://developer.getpebble.com/getting-started/watchface-tutorial/part2/
@@ -168,7 +170,7 @@ static void main_window_load(Window *window) {
     s_battery_layer = text_layer_create(BAT_POS);
     text_layer_set_text_color(s_battery_layer, FONT_BAT_COLOR);
     text_layer_set_background_color(s_battery_layer, GColorClear);
-    text_layer_set_font(s_battery_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+    text_layer_set_font(s_battery_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
     text_layer_set_text_alignment(s_battery_layer, GTextAlignmentLeft);
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
     text_layer_set_text(s_battery_layer, MAX_BAT_STR);

@@ -61,6 +61,7 @@ static BitmapLayer *s_background_layer;
 static GBitmap     *s_background_bitmap;
 
 static int last_day = -1;
+static bool bluetooth_state = false;
 
 
 #define MAX_DATE_STR "Thu, 00 Aug"
@@ -79,7 +80,14 @@ static void handle_bluetooth(bool connected)
     else
     {
         text_layer_set_text(s_bluetooth_layer, "BT Disconnected");
+        /* TODO make this a config option */
+        if (bluetooth_state != connected)
+        {
+            /* had BT connection then lost it, rather than started disconnected */
+            vibes_short_pulse();
+        }
     }
+    bluetooth_state = connected;
 }
 
 static void setup_bluetooth(Window *window)

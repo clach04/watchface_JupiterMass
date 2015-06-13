@@ -1,5 +1,7 @@
 {
-    "appKeys": {},
+    "appKeys": {
+        "KEY_TIME_COLOR": 0
+    },
     "capabilities": [
         ""
     ],

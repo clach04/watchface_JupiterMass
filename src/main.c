@@ -42,6 +42,9 @@
 #define DATE_POS GRect(0, 140, 144, 168) /* probably taller than really needed */
 #define BAT_POS GRect(0, 140, 144, 168) /* probably taller than really needed */
 
+/* PebbleKit JS, Message Keys, Pebble config keys */
+// FIXME why can't this be generated from the json settings file into a header?
+#define KEY_TIME_COLOR 0
 
 static Window    *s_main_window;
 static TextLayer *s_time_layer;
@@ -54,7 +57,8 @@ static GFont       s_date_font;
 static BitmapLayer *s_background_layer;
 static GBitmap     *s_background_bitmap;
 /* For colors, see http://developer.getpebble.com/tools/color-picker/#0000FF */
-static GColor       font_color;
+static GColor       time_color;  /* NOTE used for date too */
+static int          config_time_color;
 
 static int last_day = -1;
 static bool bluetooth_state = false;
@@ -166,7 +170,19 @@ static void update_time() {
 }
 
 static void main_window_load(Window *window) {
-    font_color = COLOR_FALLBACK(GColorBlue, GColorWhite);
+#ifdef PBL_PLATFORM_BASALT
+    if (persist_exists(KEY_TIME_COLOR))
+    {
+        config_time_color = persist_read_int(KEY_TIME_COLOR);
+        APP_LOG(APP_LOG_LEVEL_INFO, "Reading time color: %x", config_time_color);
+        time_color = COLOR_FALLBACK(GColorFromHEX(config_time_color), GColorWhite);
+    }
+    else
+#endif /* PBL_PLATFORM_BASALT */
+    {
+        time_color = COLOR_FALLBACK(GColorBlue, GColorWhite);
+    }
+
     // Create GBitmap, then set to created BitmapLayer
     s_background_bitmap = gbitmap_create_with_resource(BG_IMAGE);
     
@@ -177,7 +193,7 @@ static void main_window_load(Window *window) {
     // Create time TextLayer
     s_time_layer = text_layer_create(CLOCK_POS);
     text_layer_set_background_color(s_time_layer, GColorClear);
-    text_layer_set_text_color(s_time_layer, font_color);
+    text_layer_set_text_color(s_time_layer, time_color);
     text_layer_set_text(s_time_layer, "00:00");
 
     // Create GFont
@@ -194,7 +210,7 @@ static void main_window_load(Window *window) {
     /* Create date TextLayer */
     s_date_layer = text_layer_create(DATE_POS);
     text_layer_set_background_color(s_date_layer, GColorClear);
-    text_layer_set_text_color(s_date_layer, font_color);
+    text_layer_set_text_color(s_date_layer, time_color);
     text_layer_set_text(s_date_layer, MAX_DATE_STR);
 
     /* Create GFont */

@@ -1,6 +1,7 @@
 # Jupiter Mass - a Pebble watchface
 
-https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/bw_aplite_charging.png
+<img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/bw_aplite_charging.png" alt="OG Pebble screenshot showing battery is charging"> 
+
 
 Basic digital watch face for the Pebble smartwatch. Features:
   * Updates once per minute

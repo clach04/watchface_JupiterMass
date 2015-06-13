@@ -69,6 +69,33 @@ static bool bluetooth_state = false;
 #define MAX_BAT_STR "Bat: ??%"
 
 
+static void in_recv_handler(DictionaryIterator *iterator, void *context)
+{
+    Tuple *t=NULL;
+
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "in_recv_handler() called");
+    t = dict_read_first(iterator);
+    while(t != NULL)
+    {
+        switch(t->key)
+        {
+            case KEY_TIME_COLOR:
+                APP_LOG(APP_LOG_LEVEL_DEBUG, "got KEY_TIME_COLOR");
+                config_time_color = (int)t->value->int32;
+                APP_LOG(APP_LOG_LEVEL_DEBUG, "Persisting time color: %x", config_time_color);
+                persist_write_int(KEY_TIME_COLOR, config_time_color);
+                time_color = COLOR_FALLBACK(GColorFromHEX(config_time_color), GColorWhite);
+                text_layer_set_text_color(s_time_layer, time_color);
+                text_layer_set_text_color(s_date_layer, time_color);
+                break;
+            default:
+                APP_LOG(APP_LOG_LEVEL_ERROR, "Unknown key! :-(");
+                break;
+        }
+        t = dict_read_next(iterator);
+    }
+}
+
 static void handle_bluetooth(bool connected)
 {
     /* TODO use gfx not text */
@@ -170,19 +197,6 @@ static void update_time() {
 }
 
 static void main_window_load(Window *window) {
-#ifdef PBL_PLATFORM_BASALT
-    if (persist_exists(KEY_TIME_COLOR))
-    {
-        config_time_color = persist_read_int(KEY_TIME_COLOR);
-        APP_LOG(APP_LOG_LEVEL_INFO, "Reading time color: %x", config_time_color);
-        time_color = COLOR_FALLBACK(GColorFromHEX(config_time_color), GColorWhite);
-    }
-    else
-#endif /* PBL_PLATFORM_BASALT */
-    {
-        time_color = COLOR_FALLBACK(GColorBlue, GColorWhite);
-    }
-
     // Create GBitmap, then set to created BitmapLayer
     s_background_bitmap = gbitmap_create_with_resource(BG_IMAGE);
     
@@ -266,7 +280,22 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
     update_time();
 }
 
-static void init() {
+static void init()
+{
+#ifdef PBL_PLATFORM_BASALT
+    /* TODO refactor */
+    if (persist_exists(KEY_TIME_COLOR))
+    {
+        config_time_color = persist_read_int(KEY_TIME_COLOR);
+        APP_LOG(APP_LOG_LEVEL_INFO, "Reading time color: %x", config_time_color);
+        time_color = COLOR_FALLBACK(GColorFromHEX(config_time_color), GColorWhite);
+    }
+    else
+#endif /* PBL_PLATFORM_BASALT */
+    {
+        time_color = COLOR_FALLBACK(GColorBlue, GColorWhite);
+    }
+
     // Create main Window element and assign to pointer
     s_main_window = window_create();
 
@@ -282,6 +311,10 @@ static void init() {
     /* Register events; TickTimerService, Battery */
     tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
     battery_state_service_subscribe(handle_battery);
+
+    /* TODO use AppSync instead? */
+    app_message_register_inbox_received(in_recv_handler);
+    app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum()); 
 }
 
 static void deinit() {

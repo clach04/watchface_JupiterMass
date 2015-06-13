@@ -3,7 +3,7 @@
         "KEY_TIME_COLOR": 0
     },
     "capabilities": [
-        ""
+        "configurable"
     ],
     "companyName": "clach04",
     "longName": "JupiterMass",

@@ -1,6 +1,6 @@
 # Jupiter Mass - a Pebble watchface
 
-<img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshotsbasalt_no_bluetooth.png" alt="Pebble Time color screenshot showing bluetooth disconnected"> 
+<img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/basalt_no_bluetooth.png" alt="Pebble Time color screenshot showing bluetooth disconnected"> 
 <img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/bw_aplite_charging.png" alt="OG Pebble screenshot showing battery is charging"> 
 
 

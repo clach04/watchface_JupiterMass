@@ -33,12 +33,6 @@
 //#define BG_IMAGE RESOURCE_ID_IMAGE_N7LOGO_WHITE
 #define BG_IMAGE RESOURCE_ID_IMAGE_N7LOGO
 
-/* For colors, see http://developer.getpebble.com/tools/color-picker/#0000FF */
-//#define FONT_COLOR GColorBlack
-//#define FONT_COLOR COLOR_FALLBACK(GColorBlue, GColorBlack)
-//#define FONT_COLOR GColorWhite
-#define FONT_COLOR COLOR_FALLBACK(GColorBlue, GColorWhite)
-
 #define FONT_BAT_COLOR GColorWhite
 
 #define FONT_NAME RESOURCE_ID_FONT_JUPITER_60
@@ -59,6 +53,8 @@ static GFont       s_time_font;
 static GFont       s_date_font;
 static BitmapLayer *s_background_layer;
 static GBitmap     *s_background_bitmap;
+/* For colors, see http://developer.getpebble.com/tools/color-picker/#0000FF */
+static GColor       font_color;
 
 static int last_day = -1;
 static bool bluetooth_state = false;
@@ -170,6 +166,7 @@ static void update_time() {
 }
 
 static void main_window_load(Window *window) {
+    font_color = COLOR_FALLBACK(GColorBlue, GColorWhite);
     // Create GBitmap, then set to created BitmapLayer
     s_background_bitmap = gbitmap_create_with_resource(BG_IMAGE);
     
@@ -180,7 +177,7 @@ static void main_window_load(Window *window) {
     // Create time TextLayer
     s_time_layer = text_layer_create(CLOCK_POS);
     text_layer_set_background_color(s_time_layer, GColorClear);
-    text_layer_set_text_color(s_time_layer, FONT_COLOR);
+    text_layer_set_text_color(s_time_layer, font_color);
     text_layer_set_text(s_time_layer, "00:00");
 
     // Create GFont
@@ -197,7 +194,7 @@ static void main_window_load(Window *window) {
     /* Create date TextLayer */
     s_date_layer = text_layer_create(DATE_POS);
     text_layer_set_background_color(s_date_layer, GColorClear);
-    text_layer_set_text_color(s_date_layer, FONT_COLOR);
+    text_layer_set_text_color(s_date_layer, font_color);
     text_layer_set_text(s_date_layer, MAX_DATE_STR);
 
     /* Create GFont */

@@ -1,4 +1,4 @@
-# Jupiter Mass - a Pebble watchface
+# ![](resources/images/n7_logo_icon_c_pebble_mono~color.png) Jupiter Mass - a Pebble watchface
 
 <img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/basalt_no_bluetooth.png" alt="Pebble Time color screenshot showing bluetooth disconnected"> 
 <img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/basalt_brightgreen.png" alt="Pebble Time color screenshot showing Bright Green color for date and time"> 

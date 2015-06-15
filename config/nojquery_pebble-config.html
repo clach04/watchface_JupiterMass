@@ -1,0 +1,150 @@
+<html>
+<head>
+    <title>colour Pebble App</title>
+    <style>
+        p {
+            font-family:Arial;
+            font-size:11pt;
+        }
+
+        h1 {
+            font-family:Arial;
+            font-size:20pt;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Color Watch Face config:</h1>
+    <br><br>
+    <p>Time and Date color:
+        <select id="time_color" name="time_color">
+            <option value="AAFFAA">MintGreen</option>
+            <option value="5500FF">ElectricUltramarine</option>
+            <option value="FF0055">Folly</option>
+            <option value="55FFFF">ElectricBlue</option>
+            <option value="555500">ArmyGreen</option>
+            <option value="0000AA">DukeBlue</option>
+            <option value="5555FF">VeryLightBlue</option>
+            <option value="00AAAA">TiffanyBlue</option>
+            <option value="55AAFF">PictonBlue</option>
+            <option value="5500AA">Indigo</option>
+            <option value="AAFF00">SpringBud</option>
+            <option value="55FF00">BrightGreen</option>
+            <option value="000055">OxfordBlue</option>
+            <option value="55AAAA">CadetBlue</option>
+            <option value="AA5555">RoseVale</option>
+            <option value="FF00AA">FashionMagenta</option>
+            <option value="FFAAAA">Melon</option>
+            <option value="AA0055">JazzberryJam</option>
+            <option value="AA55AA">Purpureus</option>
+            <option value="550055">ImperialPurple</option>
+            <option value="005500">DarkGreen</option>
+            <option value="0000FF">Blue</option>
+            <option value="5555AA">Liberty</option>
+            <option value="55AA00">KellyGreen</option>
+            <option value="55AA55">MayGreen</option>
+            <option value="AA00FF">VividViolet</option>
+            <option value="FFAA55">Rajah</option>
+            <option value="FF55AA">BrilliantRose</option>
+            <option value="AAAAAA">LightGray</option>
+            <option value="00AAFF">VividCerulean</option>
+            <option value="550000">BulgarianRose</option>
+            <option value="00FF00">Green</option>
+            <option value="AA5500">WindsorTan</option>
+            <option value="00AA55">JaegerGreen</option>
+            <option value="555555">DarkGray</option>
+            <option value="FF5500">Orange</option>
+            <option value="0055FF">BlueMoon</option>
+            <option value="000000">Black</option>
+            <option value="00FFFF">Cyan</option>
+            <option value="AA0000">DarkCandyAppleRed</option>
+            <option value="AAAA00">Limerick</option>
+            <option value="0055AA">CobaltBlue</option>
+            <option value="FFFFAA">PastelYellow</option>
+            <option value="FF55FF">ShockingPink</option>
+            <option value="55FF55">ScreaminGreen</option>
+            <option value="FF0000">Red</option>
+            <option value="FFAA00">ChromeYellow</option>
+            <option value="AA55FF">LavenderIndigo</option>
+            <option value="AAFF55">Inchworm</option>
+            <option value="00FF55">Malachite</option>
+            <option value="55FFAA">MediumAquamarine</option>
+            <option value="FFFF00">Yellow</option>
+            <option value="FF00FF">Magenta</option>
+            <option value="AAFFFF">Celeste</option>
+            <option value="FFAAFF">RichBrilliantLavender</option>
+            <option value="AAAAFF">BabyBlueEyes</option>
+            <option value="005555">MidnightGreen</option>
+            <option value="AA00AA">Purple</option>
+            <option value="FFFFFF">White</option>
+            <option value="00FFAA">MediumSpringGreen</option>
+            <option value="FFFF55">Icterine</option>
+            <option value="FF5555">SunsetOrange</option>
+            <option value="AAAA55">Brass</option>
+            <option value="00AA00">IslamicGreen</option>
+        </select>
+    </p>
+
+
+    <p>
+        <button id="save_button">Save</button>
+        <button id="cancel_button">Cancel</button>
+    </p>
+
+</body>
+</html>
+
+
+<script>
+
+    // Something like this to get query variables.
+    function getQueryParam(variable, defaultValue) {
+        // Find all URL parameters
+        var query = location.search.substring(1);
+        var vars = query.split('&');
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=');
+
+            // If the query variable parameter is found, decode it to use and return it for use
+            if (pair[0] === variable) {
+                return decodeURIComponent(pair[1]);
+            }
+        }
+        return defaultValue || false;
+    }
+
+    //Setup to allow easy adding more options later
+    function saveOptions() {
+        var e = document.getElementById("time_color");
+        var hex_color_str = e.options[e.selectedIndex].value; // or text for display
+        var options = {
+            'color': hex_color_str
+        }
+        return options;
+    };
+
+
+
+     document.getElementById("cancel_button").addEventListener('click',
+        function () {
+            console.log("Cancel");
+
+            // Set the return URL depending on the runtime environment (emulator or Pebble Phone App)
+            var return_to = getQueryParam('return_to', 'pebblejs://close#cancel');
+            document.location.href = return_to;
+        }
+    , false);
+
+     document.getElementById("save_button").addEventListener('click',
+        function () {
+            console.log("Submit");
+            var options = saveOptions();
+
+            // Set the return URL depending on the runtime environment (emulator or Pebble Phone App)
+            var return_to = getQueryParam('return_to', 'pebblejs://close#');
+            document.location.href = return_to + encodeURIComponent(JSON.stringify(options));
+        }
+    , false);
+
+</script>

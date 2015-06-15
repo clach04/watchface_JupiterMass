@@ -162,7 +162,7 @@ static void handle_battery(BatteryChargeState charge_state) {
 }
 
 static void update_date(struct tm *tick_time) {
-    static char buffer[] = MAX_DATE_STR;  /* FIXME use same buffer one for date and time? */
+    static char buffer[] = MAX_DATE_STR;  /* FIXME use same buffer, one for both date and time? */
 
     last_day = tick_time->tm_mday;
     strftime(buffer, sizeof(buffer), "%a, %d %b", tick_time); /* TODO review %d for day */

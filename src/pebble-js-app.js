@@ -5,7 +5,11 @@ Pebble.addEventListener('showConfiguration', function(e) {
       // http://developer.getpebble.com/tools/color-picker/#0000FF
       color = "0000FF";  // GColorBlue
   }
-  var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html?' +
+
+  //var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html?' +
+  //var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html' +
+  var URL = 'http://clach04.github.io/pebconfig/nojquery_pebble-config.html' +
+      '?' +
       'color=' + color;
   console.log('Configuration window opened. ' + URL);
   Pebble.openURL(URL);

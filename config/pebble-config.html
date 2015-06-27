@@ -152,9 +152,10 @@
           selectColor($(this));
         });
 
-       // Were we passed any values?
+       // Any option values passed in via URL?
        options['color'] = getUrlParameter('color', 'FFFFAA');
-
+       options['vibrate_disconnect'] = getUrlParameter('vibrate_disconnect', 'off');
+       document.getElementById('vibrate_disconnect').value = options['vibrate_disconnect'];
       });
 
     </script>

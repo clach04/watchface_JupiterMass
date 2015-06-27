@@ -5,11 +5,27 @@ Pebble.addEventListener('showConfiguration', function(e) {
       // http://developer.getpebble.com/tools/color-picker/#0000FF
       color = "0000FF";  // GColorBlue
   }
+  var vibrate_disconnect_str = 'off';
+  var vibrate_disconnect = localStorage.getItem('vibrate_disconnect');
+  if (! vibrate_disconnect)
+  {
+      console.log('!vibrate_disconnect: ');
+      vibrate_disconnect = 0;
+  }
+  if (vibrate_disconnect == 1)
+  {
+      vibrate_disconnect_str = 'on';
+  }
+  else
+  {
+      vibrate_disconnect_str = 'off';
+  }
 
-  //var URL = 'http://clach04.github.io/pebble/JupiterMass/nojquery_pebble-config.html' +
-  var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html' +
+  var URL = 'http://clach04.github.io/pebble/JupiterMass/nojquery_pebble-config.html' +
+  //var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html' +
       '?' +
-      'color=' + color;
+      'color=' + color + '&' +
+      'vibrate_disconnect=' + vibrate_disconnect;
   console.log('Configuration window opened. ' + URL);
   Pebble.openURL(URL);
 });
@@ -44,6 +60,8 @@ Pebble.addEventListener('webviewclosed',
             };
             console.log('Color ' + configuration.color);
             localStorage.setItem('color', configuration.color);
+            console.log('vibrate_disconnect ' + configuration.vibrate_disconnect);
+            localStorage.setItem('vibrate_disconnect', configuration.vibrate_disconnect);
             // Send to Pebble
             Pebble.sendAppMessage(dictionary,
                 function(e) {

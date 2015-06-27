@@ -6,7 +6,7 @@ Pebble.addEventListener('showConfiguration', function(e) {
       color = "0000FF";  // GColorBlue
   }
 
-  //var URL = 'http://clach04.github.io/pebconfig/nojquery_pebble-config.html' +
+  //var URL = 'http://clach04.github.io/pebble/JupiterMass/nojquery_pebble-config.html' +
   var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html' +
       '?' +
       'color=' + color;
@@ -20,8 +20,27 @@ Pebble.addEventListener('webviewclosed',
         console.log('e.response.length: ' + e.response.length);
         try {
             var configuration = JSON.parse(decodeURIComponent(e.response));
+            var vibrate_disconnect = 0;
+            if ('vibrate_disconnect' in configuration)
+            {
+                switch (configuration.vibrate_disconnect) {
+                    case true:
+                    case 'true':
+                    case 'True':
+                    case 'TRUE':
+                    case 1:
+                    case '1':
+                    case 'on':
+                        vibrate_disconnect = 1;
+                        break;
+                    default:
+                        vibrate_disconnect = 0;
+                        break;
+                }
+            }
             var dictionary = {
-              "KEY_TIME_COLOR": parseInt(configuration.color, 16)
+              "KEY_TIME_COLOR": parseInt(configuration.color, 16),
+              "KEY_VIBRATE_ON_DISCONNECT": vibrate_disconnect
             };
             console.log('Color ' + configuration.color);
             localStorage.setItem('color', configuration.color);

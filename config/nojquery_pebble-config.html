@@ -86,6 +86,17 @@
         </select>
     </p>
 
+    <!--
+        <label>Vibrate on Bluetooth disconnect</label></td><td><input type="checkbox" name="vibrate_disconnect" id="vibrate_disconnect"/>
+    -->
+    <p>
+        <label>Vibrate on Bluetooth disconnect:</label>
+        <select id="vibrate_disconnect" name="vibrate_disconnect">
+            <option value="off">Off</option>
+            <option value="on">On</option>
+        </select>
+    </p>
+
 
     <p>
         <button id="save_button">Save</button>
@@ -116,10 +127,12 @@
 
     //Setup to allow easy adding more options later
     function saveOptions() {
+        var v = document.getElementById("vibrate_disconnect");
         var e = document.getElementById("time_color");
         var hex_color_str = e.options[e.selectedIndex].value; // or text for display
         var options = {
-            'color': hex_color_str
+            'color': hex_color_str,
+            'vibrate_disconnect': v.value
         }
         return options;
     };

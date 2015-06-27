@@ -21,6 +21,14 @@
           <div class="ui-block-b"><button type="submit" data-theme="a" id="b-submit">Save</button></div>
         </fieldset>
 
+      <div data-role="fieldcontain">
+        <label for="vibrate_disconnect">Vibrate on Bluetooth disconnect:</label>
+        <select name="vibrate_disconnect" id="vibrate_disconnect" data-role="slider">
+            <option value="off">Off</option>
+            <option value="on">On</option>
+        </select>
+      </div>
+
 <!-- Palette selector -->
 <label for="color-picker">Time Color:</label>
 
@@ -100,6 +108,7 @@
       var options = {};
 
       function saveOptions() {
+        options['vibrate_disconnect'] = document.getElementById("vibrate_disconnect").value;
         return options;
       }
 

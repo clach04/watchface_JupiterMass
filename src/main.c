@@ -99,7 +99,6 @@ static void in_recv_handler(DictionaryIterator *iterator, void *context)
 static void handle_bluetooth(bool connected)
 {
     /* TODO use gfx not text */
-    /* TODO vibrate/rumble on disconnect event */
     if (connected)
     {
         text_layer_set_text(s_bluetooth_layer, "");
@@ -111,7 +110,7 @@ static void handle_bluetooth(bool connected)
         if (bluetooth_state != connected)
         {
             /* had BT connection then lost it, rather than started disconnected */
-            vibes_short_pulse();
+            vibes_short_pulse();  /* vibrate/rumble */
         }
     }
     bluetooth_state = connected;

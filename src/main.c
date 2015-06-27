@@ -45,6 +45,7 @@
 /* PebbleKit JS, Message Keys, Pebble config keys */
 // FIXME why can't this be generated from the json settings file into a header?
 #define KEY_TIME_COLOR 0
+#define KEY_VIBRATE_ON_DISCONNECT 1
 
 static Window    *s_main_window;
 static TextLayer *s_time_layer;
@@ -59,6 +60,7 @@ static GBitmap     *s_background_bitmap;
 /* For colors, see http://developer.getpebble.com/tools/color-picker/#0000FF */
 static GColor       time_color;  /* NOTE used for date too */
 static int          config_time_color;
+static bool         config_time_vib_on_disconnect = false;
 
 static int last_day = -1;
 static bool bluetooth_state = false;
@@ -88,6 +90,10 @@ static void in_recv_handler(DictionaryIterator *iterator, void *context)
                 text_layer_set_text_color(s_time_layer, time_color);
                 text_layer_set_text_color(s_date_layer, time_color);
                 break;
+            case KEY_VIBRATE_ON_DISCONNECT:
+                config_time_vib_on_disconnect = (bool)t->value->int32;  /* this doesn't feel correct... */
+                persist_write_bool(KEY_VIBRATE_ON_DISCONNECT, config_time_vib_on_disconnect);
+                break;
             default:
                 APP_LOG(APP_LOG_LEVEL_ERROR, "Unknown key! :-(");
                 break;
@@ -106,8 +112,7 @@ static void handle_bluetooth(bool connected)
     else
     {
         text_layer_set_text(s_bluetooth_layer, "BT Disconnected");
-        /* TODO make this a config option */
-        if (bluetooth_state != connected)
+        if (config_time_vib_on_disconnect && (bluetooth_state != connected))
         {
             /* had BT connection then lost it, rather than started disconnected */
             vibes_short_pulse();  /* vibrate/rumble */
@@ -293,6 +298,11 @@ static void init()
 #endif /* PBL_PLATFORM_BASALT */
     {
         time_color = COLOR_FALLBACK(GColorBlue, GColorWhite);
+    }
+
+    if (persist_exists(KEY_VIBRATE_ON_DISCONNECT))
+    {
+        config_time_vib_on_disconnect = persist_read_bool(KEY_VIBRATE_ON_DISCONNECT);
     }
 
     // Create main Window element and assign to pointer

@@ -1,6 +1,7 @@
 {
     "appKeys": {
-        "KEY_TIME_COLOR": 0
+        "KEY_TIME_COLOR": 0,
+        "KEY_VIBRATE_ON_DISCONNECT": 1
     },
     "capabilities": [
         "configurable"

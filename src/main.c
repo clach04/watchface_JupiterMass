@@ -84,14 +84,16 @@ static void in_recv_handler(DictionaryIterator *iterator, void *context)
             case KEY_TIME_COLOR:
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "got KEY_TIME_COLOR");
                 config_time_color = (int)t->value->int32;
-                APP_LOG(APP_LOG_LEVEL_DEBUG, "Persisting time color: %x", config_time_color);
+                APP_LOG(APP_LOG_LEVEL_DEBUG, "Persisting time color: 0x%06x", config_time_color);
                 persist_write_int(KEY_TIME_COLOR, config_time_color);
                 time_color = COLOR_FALLBACK(GColorFromHEX(config_time_color), GColorWhite);
                 text_layer_set_text_color(s_time_layer, time_color);
                 text_layer_set_text_color(s_date_layer, time_color);
                 break;
             case KEY_VIBRATE_ON_DISCONNECT:
+                APP_LOG(APP_LOG_LEVEL_DEBUG, "got KEY_VIBRATE_ON_DISCONNECT");
                 config_time_vib_on_disconnect = (bool)t->value->int32;  /* this doesn't feel correct... */
+                APP_LOG(APP_LOG_LEVEL_INFO, "Persisting vib_on_disconnect: %d", (int) config_time_vib_on_disconnect);
                 persist_write_bool(KEY_VIBRATE_ON_DISCONNECT, config_time_vib_on_disconnect);
                 break;
             default:
@@ -291,7 +293,7 @@ static void init()
     if (persist_exists(KEY_TIME_COLOR))
     {
         config_time_color = persist_read_int(KEY_TIME_COLOR);
-        APP_LOG(APP_LOG_LEVEL_INFO, "Reading time color: %x", config_time_color);
+        APP_LOG(APP_LOG_LEVEL_INFO, "Read time color: %x", config_time_color);
         time_color = COLOR_FALLBACK(GColorFromHEX(config_time_color), GColorWhite);
     }
     else
@@ -303,6 +305,7 @@ static void init()
     if (persist_exists(KEY_VIBRATE_ON_DISCONNECT))
     {
         config_time_vib_on_disconnect = persist_read_bool(KEY_VIBRATE_ON_DISCONNECT);
+        APP_LOG(APP_LOG_LEVEL_INFO, "Read vib_on_disconnect: %d", (int) config_time_vib_on_disconnect);
     }
 
     // Create main Window element and assign to pointer

@@ -160,4 +160,9 @@
         }
     , false);
 
+    //document.getElementById("vibrate_disconnect").selectedIndex = 1; // works
+    document.getElementById('vibrate_disconnect').value = getQueryParam('vibrate_disconnect', 'off');
+    var time_color = getQueryParam('color', 'FFFFAA');
+    document.getElementById('time_color').value = getQueryParam('time_color', time_color);
+
 </script>

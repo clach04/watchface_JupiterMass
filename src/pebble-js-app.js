@@ -21,8 +21,8 @@ Pebble.addEventListener('showConfiguration', function(e) {
       vibrate_disconnect_str = 'off';
   }
 
-  var URL = 'http://clach04.github.io/pebble/JupiterMass/nojquery_pebble-config.html' +
-  //var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html' +
+  //var URL = 'http://clach04.github.io/pebble/JupiterMass/nojquery_pebble-config.html' +
+  var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html' +
       '?' +
       'color=' + color + '&' +
       'vibrate_disconnect=' + vibrate_disconnect;

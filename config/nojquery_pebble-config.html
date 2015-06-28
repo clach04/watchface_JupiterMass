@@ -3,6 +3,7 @@
     <title>colour Pebble App</title>
     <meta name="viewport" content="width=device-width" />
     <style>
+        /* Local CSS, try and avoid external dependencies even if results are not as pretty as when using hosted solutions like http://purecss.io/ */
         p {
             font-family:Arial;
             font-size:11pt;
@@ -308,8 +309,10 @@
 
 
 <script>
+    // Local javascript, try and avoid external dependencies even if results are not as complete as other options such as https://jquery.com/, http://zeptojs.com/
+    // http://youmightnotneedjquery.com/
 
-    // Something like this to get query variables.
+    // get URL query variables
     function getQueryParam(variable, defaultValue) {
         // Find all URL parameters
         var query = location.search.substring(1);

@@ -9,7 +9,7 @@ Basic digital watch face for the Pebble smartwatch. Features:
   * Updates once per minute
   * Includes battery status
   * Supports Aplite (original Pebble) and Basalt (Pebble Time)
-  * Vibrates when Bluetooth connection lost (and displays connection lost)
+  * Displays when Bluetooth connection is lost and optionally vibrates
   * Configurable color for time and date - Basalt (Pebble Time) ONLY
 
 Acknowledgements

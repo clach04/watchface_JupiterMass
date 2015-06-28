@@ -62,144 +62,6 @@
             top:1px;
         }
 
-        /* Select, option Drop down */
-        /* From http://red-team-design.com/making-html-dropdowns-not-suck/ */
-        /*
-            B.E.M Naming convention:
-            (Block) .custom-dropdown			= The main component
-            (Element) .custom-dropdown__select	= Descendant of .custom-dropdown
-            (Modifier) .custom-dropdown--*		= Different state of .custom-dropdown
-        */
-
-        .custom-dropdown--large {
-            font-size: 1.5em;
-        }
-
-        .custom-dropdown--small {
-            font-size: .7em;
-        }
-
-        .custom-dropdown__select{
-            font-size: inherit; /* inherit size from .custom-dropdown */
-            padding: .5em; /* add some space*/
-            margin: 0; /* remove default margins */
-        }
-
-        .custom-dropdown__select--white {
-            background-color: #fff;
-            color: #444;
-        }
-
-        .custom-dropdown__select--emerald {
-            background-color: #20b390;
-            color: #fff;
-        }
-
-        .custom-dropdown__select--red {
-            background-color: #d53a22;
-            color: #fff;
-        }
-
-        @supports (pointer-events: none) and
-                  ((-webkit-appearance: none) or
-                  (-moz-appearance: none) or
-                  (appearance: none)) {
-
-            h2+p {
-                color: green; /* Demo only */
-            }
-
-            .custom-dropdown {
-                position: relative;
-                display: inline-block;
-                vertical-align: middle;
-            }
-
-            .custom-dropdown__select {
-                padding-right: 2.5em; /* accommodate with the pseudo elements for the dropdown arrow */				
-                border: 0;
-                border-radius: 3px;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-            }
-
-            .custom-dropdown::before,
-            .custom-dropdown::after {
-                content: "";
-                position: absolute;
-                pointer-events: none;
-            }
-
-            .custom-dropdown::after { /*  Custom dropdown arrow */
-                content: "\25BC";
-                height: 1em;
-                font-size: .625em;
-                line-height: 1;
-                right: 1.2em;
-                top: 50%; margin-top: -.5em;
-            }
-
-            .custom-dropdown::before { /*  Custom dropdown arrow cover */
-                width: 2em;
-                right: 0; top: 0; bottom: 0;
-                border-radius: 0 3px 3px 0;
-            }
-
-            .custom-dropdown__select[disabled] {
-                color: rgba(0,0,0,.3);
-            }
-
-            .custom-dropdown.custom-dropdown--disabled::after {
-                color: rgba(0,0,0,.1);
-            }
-
-            /* White dropdown style */
-            .custom-dropdown--white::before {
-                background-color: #fff;
-                border-left: 1px solid rgba(0,0,0,.1);
-            }
-
-            .custom-dropdown--white::after {
-                color: rgba(0,0,0,.9);
-            }
-
-            /* Emerald dropdown style */
-            .custom-dropdown--emerald::before {
-                background-color: #1aa181;
-            }
-
-            .custom-dropdown--emerald::after {
-                color: rgba(0,0,0,.4);
-            }
-
-
-            /* Red dropdown style */
-            .custom-dropdown--red::before {
-                background-color: #d53a22;
-            }
-
-            .custom-dropdown--red::after {
-                color: rgba(0,0,0,.4);
-            }
-
-            /* FF only temporary & ugly fixes */
-            /* the "appearance: none" applied on select still shows a dropdown arrow on Firefox */
-            /* https://bugzilla.mozilla.org/show_bug.cgi?id=649849 */
-            @-moz-document url-prefix() {
-                .custom-dropdown__select 						 { padding-right: .9em }
-                .custom-dropdown--large .custom-dropdown__select { padding-right: 1.3em }
-                .custom-dropdown--small .custom-dropdown__select { padding-right: .5em }
-            }
-
-        }
-
-
-        .custom-dropdown {
-            margin: 10px;
-            display: inline-block;
-        }
-
     </style>
 </head>
 
@@ -215,76 +77,74 @@
 
     <p>Time and Date color:
         <!--
-            TODO use colors for background in selection option? May need to do this in javascript only
+            show colors in background in selection options. NOTE use inverted color for text
         -->
-        <span class="custom-dropdown custom-dropdown--white custom-dropdown--large">
-        <select id="time_color" name="time_color" class="custom-dropdown__select custom-dropdown__select--white">
-            <option value="AAFFAA">MintGreen</option>
-            <option value="5500FF">ElectricUltramarine</option>
-            <option value="FF0055">Folly</option>
-            <option value="55FFFF">ElectricBlue</option>
-            <option value="555500">ArmyGreen</option>
-            <option value="0000AA">DukeBlue</option>
-            <option value="5555FF">VeryLightBlue</option>
-            <option value="00AAAA">TiffanyBlue</option>
-            <option value="55AAFF">PictonBlue</option>
-            <option value="5500AA">Indigo</option>
-            <option value="AAFF00">SpringBud</option>
-            <option value="55FF00">BrightGreen</option>
-            <option value="000055">OxfordBlue</option>
-            <option value="55AAAA">CadetBlue</option>
-            <option value="AA5555">RoseVale</option>
-            <option value="FF00AA">FashionMagenta</option>
-            <option value="FFAAAA">Melon</option>
-            <option value="AA0055">JazzberryJam</option>
-            <option value="AA55AA">Purpureus</option>
-            <option value="550055">ImperialPurple</option>
-            <option value="005500">DarkGreen</option>
-            <option value="0000FF">Blue</option>
-            <option value="5555AA">Liberty</option>
-            <option value="55AA00">KellyGreen</option>
-            <option value="55AA55">MayGreen</option>
-            <option value="AA00FF">VividViolet</option>
-            <option value="FFAA55">Rajah</option>
-            <option value="FF55AA">BrilliantRose</option>
-            <option value="AAAAAA">LightGray</option>
-            <option value="00AAFF">VividCerulean</option>
-            <option value="550000">BulgarianRose</option>
-            <option value="00FF00">Green</option>
-            <option value="AA5500">WindsorTan</option>
-            <option value="00AA55">JaegerGreen</option>
-            <option value="555555">DarkGray</option>
-            <option value="FF5500">Orange</option>
-            <option value="0055FF">BlueMoon</option>
-            <option value="000000">Black</option>
-            <option value="00FFFF">Cyan</option>
-            <option value="AA0000">DarkCandyAppleRed</option>
-            <option value="AAAA00">Limerick</option>
-            <option value="0055AA">CobaltBlue</option>
-            <option value="FFFFAA">PastelYellow</option>
-            <option value="FF55FF">ShockingPink</option>
-            <option value="55FF55">ScreaminGreen</option>
-            <option value="FF0000">Red</option>
-            <option value="FFAA00">ChromeYellow</option>
-            <option value="AA55FF">LavenderIndigo</option>
-            <option value="AAFF55">Inchworm</option>
-            <option value="00FF55">Malachite</option>
-            <option value="55FFAA">MediumAquamarine</option>
-            <option value="FFFF00">Yellow</option>
-            <option value="FF00FF">Magenta</option>
-            <option value="AAFFFF">Celeste</option>
-            <option value="FFAAFF">RichBrilliantLavender</option>
-            <option value="AAAAFF">BabyBlueEyes</option>
-            <option value="005555">MidnightGreen</option>
-            <option value="AA00AA">Purple</option>
-            <option value="FFFFFF">White</option>
-            <option value="00FFAA">MediumSpringGreen</option>
-            <option value="FFFF55">Icterine</option>
-            <option value="FF5555">SunsetOrange</option>
-            <option value="AAAA55">Brass</option>
-            <option value="00AA00">IslamicGreen</option>
+        <select id="time_color" name="time_color" style="background: #AAFFAA; color: #000000;" onChange="this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor; this.style.color=this.options[this.selectedIndex].style.color">
+            <option value="AAFFAA" style="background: #AAFFAA; color: #550055">MintGreen</option>
+            <option value="5500FF" style="background: #5500FF; color: #aaff00">ElectricUltramarine</option>
+            <option value="FF0055" style="background: #FF0055; color: #00ffaa">Folly</option>
+            <option value="55FFFF" style="background: #55FFFF; color: #aa0000">ElectricBlue</option>
+            <option value="555500" style="background: #555500; color: #aaaaff">ArmyGreen</option>
+            <option value="0000AA" style="background: #0000AA; color: #ffff55">DukeBlue</option>
+            <option value="5555FF" style="background: #5555FF; color: #aaaa00">VeryLightBlue</option>
+            <option value="00AAAA" style="background: #00AAAA; color: #ff5555">TiffanyBlue</option>
+            <option value="55AAFF" style="background: #55AAFF; color: #aa5500">PictonBlue</option>
+            <option value="5500AA" style="background: #5500AA; color: #aaff55">Indigo</option>
+            <option value="AAFF00" style="background: #AAFF00; color: #5500ff">SpringBud</option>
+            <option value="55FF00" style="background: #55FF00; color: #aa00ff">BrightGreen</option>
+            <option value="000055" style="background: #000055; color: #ffffaa">OxfordBlue</option>
+            <option value="55AAAA" style="background: #55AAAA; color: #aa5555">CadetBlue</option>
+            <option value="AA5555" style="background: #AA5555; color: #55aaaa">RoseVale</option>
+            <option value="FF00AA" style="background: #FF00AA; color: #00ff55">FashionMagenta</option>
+            <option value="FFAAAA" style="background: #FFAAAA; color: #005555">Melon</option>
+            <option value="AA0055" style="background: #AA0055; color: #55ffaa">JazzberryJam</option>
+            <option value="AA55AA" style="background: #AA55AA; color: #55aa55">Purpureus</option>
+            <option value="550055" style="background: #550055; color: #aaffaa">ImperialPurple</option>
+            <option value="005500" style="background: #005500; color: #ffaaff">DarkGreen</option>
+            <option value="0000FF" style="background: #0000FF; color: #ffff00">Blue</option>
+            <option value="5555AA" style="background: #5555AA; color: #aaaa55">Liberty</option>
+            <option value="55AA00" style="background: #55AA00; color: #aa55ff">KellyGreen</option>
+            <option value="55AA55" style="background: #55AA55; color: #aa55aa">MayGreen</option>
+            <option value="AA00FF" style="background: #AA00FF; color: #55ff00">VividViolet</option>
+            <option value="FFAA55" style="background: #FFAA55; color: #0055aa">Rajah</option>
+            <option value="FF55AA" style="background: #FF55AA; color: #00aa55">BrilliantRose</option>
+            <option value="AAAAAA" style="background: #AAAAAA; color: #555555">LightGray</option>
+            <option value="00AAFF" style="background: #00AAFF; color: #ff5500">VividCerulean</option>
+            <option value="550000" style="background: #550000; color: #aaffff">BulgarianRose</option>
+            <option value="00FF00" style="background: #00FF00; color: #ff00ff">Green</option>
+            <option value="AA5500" style="background: #AA5500; color: #55aaff">WindsorTan</option>
+            <option value="00AA55" style="background: #00AA55; color: #ff55aa">JaegerGreen</option>
+            <option value="555555" style="background: #555555; color: #aaaaaa">DarkGray</option>
+            <option value="FF5500" style="background: #FF5500; color: #00aaff">Orange</option>
+            <option value="0055FF" style="background: #0055FF; color: #ffaa00">BlueMoon</option>
+            <option value="000000" style="background: #000000; color: #ffffff">Black</option>
+            <option value="00FFFF" style="background: #00FFFF; color: #ff0000">Cyan</option>
+            <option value="AA0000" style="background: #AA0000; color: #55ffff">DarkCandyAppleRed</option>
+            <option value="AAAA00" style="background: #AAAA00; color: #5555ff">Limerick</option>
+            <option value="0055AA" style="background: #0055AA; color: #ffaa55">CobaltBlue</option>
+            <option value="FFFFAA" style="background: #FFFFAA; color: #000055">PastelYellow</option>
+            <option value="FF55FF" style="background: #FF55FF; color: #00aa00">ShockingPink</option>
+            <option value="55FF55" style="background: #55FF55; color: #aa00aa">ScreaminGreen</option>
+            <option value="FF0000" style="background: #FF0000; color: #00ffff">Red</option>
+            <option value="FFAA00" style="background: #FFAA00; color: #0055ff">ChromeYellow</option>
+            <option value="AA55FF" style="background: #AA55FF; color: #55aa00">LavenderIndigo</option>
+            <option value="AAFF55" style="background: #AAFF55; color: #5500aa">Inchworm</option>
+            <option value="00FF55" style="background: #00FF55; color: #ff00aa">Malachite</option>
+            <option value="55FFAA" style="background: #55FFAA; color: #aa0055">MediumAquamarine</option>
+            <option value="FFFF00" style="background: #FFFF00; color: #0000ff">Yellow</option>
+            <option value="FF00FF" style="background: #FF00FF; color: #00ff00">Magenta</option>
+            <option value="AAFFFF" style="background: #AAFFFF; color: #550000">Celeste</option>
+            <option value="FFAAFF" style="background: #FFAAFF; color: #005500">RichBrilliantLavender</option>
+            <option value="AAAAFF" style="background: #AAAAFF; color: #555500">BabyBlueEyes</option>
+            <option value="005555" style="background: #005555; color: #ffaaaa">MidnightGreen</option>
+            <option value="AA00AA" style="background: #AA00AA; color: #55ff55">Purple</option>
+            <option value="FFFFFF" style="background: #FFFFFF; color: #000000">White</option>
+            <option value="00FFAA" style="background: #00FFAA; color: #ff0055">MediumSpringGreen</option>
+            <option value="FFFF55" style="background: #FFFF55; color: #0000aa">Icterine</option>
+            <option value="FF5555" style="background: #FF5555; color: #00aaaa">SunsetOrange</option>
+            <option value="AAAA55" style="background: #AAAA55; color: #5555aa">Brass</option>
+            <option value="00AA00" style="background: #00AA00; color: #ff55ff">IslamicGreen</option>
         </select>
-        </span>
     </p>
 
     <!--
@@ -369,5 +229,6 @@
     document.getElementById('vibrate_disconnect').value = getQueryParam('vibrate_disconnect', 'off');
     var time_color = getQueryParam('color', 'FFFFAA');
     document.getElementById('time_color').value = getQueryParam('time_color', time_color);
+    // TODO set background and foreground colors in drop down select option
 
 </script>

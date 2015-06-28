@@ -22,11 +22,14 @@
         </fieldset>
 
       <div data-role="fieldcontain">
-        <label for="vibrate_disconnect">Vibrate on Bluetooth disconnect:</label>
-        <select name="vibrate_disconnect" id="vibrate_disconnect" data-role="slider">
-            <option value="off">Off</option>
-            <option value="on">On</option>
-        </select>
+        <fieldset data-role="unitgroup">
+          <legend>Vibrate on Bluetooth disconnect:</legend>
+          <input type="radio" name="vibrate_disconnect" id="vibrate_disconnect_off" value="off" />
+          <label for="vibrate_disconnect_off">Off</label>
+
+          <input type="radio" name="vibrate_disconnect" id="vibrate_disconnect_on" value="on" />
+          <label for="vibrate_disconnect_on">On</label>
+        </fieldset>
       </div>
 
 <!-- Palette selector -->
@@ -108,7 +111,7 @@
       var options = {};
 
       function saveOptions() {
-        options['vibrate_disconnect'] = document.getElementById("vibrate_disconnect").value;
+        options["vibrate_disconnect"] = $('input:radio[name=vibrate_disconnect]:checked').val();
         return options;
       }
 
@@ -155,7 +158,14 @@
        // Any option values passed in via URL?
        options['color'] = getUrlParameter('color', 'FFFFAA');
        options['vibrate_disconnect'] = getUrlParameter('vibrate_disconnect', 'off');
-       document.getElementById('vibrate_disconnect').value = options['vibrate_disconnect'];
+       if (options['vibrate_disconnect'] == 'on')
+       {
+            $('input#vibrate_disconnect_on').prop("checked", "true").checkboxradio("refresh");
+       }
+       else
+       {
+            $('input#vibrate_disconnect_off').prop("checked", "true").checkboxradio("refresh");
+       }
       });
 
     </script>

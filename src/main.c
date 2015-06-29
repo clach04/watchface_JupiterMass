@@ -167,6 +167,26 @@ static void handle_battery(BatteryChargeState charge_state) {
     text_layer_set_text(s_battery_layer, battery_text);
 }
 
+/* Battery level */
+static void setup_battery(Window *window)
+{
+    s_battery_layer = text_layer_create(BAT_POS);
+    text_layer_set_text_color(s_battery_layer, FONT_BAT_COLOR);
+    text_layer_set_background_color(s_battery_layer, GColorClear);
+    text_layer_set_font(s_battery_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+    text_layer_set_text_alignment(s_battery_layer, GTextAlignmentLeft);
+    layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
+    text_layer_set_text(s_battery_layer, MAX_BAT_STR);
+
+    battery_state_service_subscribe(handle_battery);
+}
+
+static void cleanup_battery()
+{
+    battery_state_service_unsubscribe();
+    text_layer_destroy(s_battery_layer);
+}
+
 static void update_date(struct tm *tick_time) {
     static char buffer[] = MAX_DATE_STR;  /* FIXME use same buffer, one for both date and time? */
 
@@ -243,15 +263,7 @@ static void main_window_load(Window *window) {
     // Add it as a child layer to the Window's root layer
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
 
-    /* Battery level */
-    s_battery_layer = text_layer_create(BAT_POS);
-    text_layer_set_text_color(s_battery_layer, FONT_BAT_COLOR);
-    text_layer_set_background_color(s_battery_layer, GColorClear);
-    text_layer_set_font(s_battery_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
-    text_layer_set_text_alignment(s_battery_layer, GTextAlignmentLeft);
-    layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
-    text_layer_set_text(s_battery_layer, MAX_BAT_STR);
-
+    setup_battery(window);
     setup_bluetooth(window);
 
     /* Make sure the time is displayed from the start */
@@ -262,6 +274,8 @@ static void main_window_load(Window *window) {
 
 static void main_window_unload(Window *window) {
     cleanup_bluetooth();
+    cleanup_battery();
+
     /* Unload GFonts */
     fonts_unload_custom_font(s_time_font);
 
@@ -274,12 +288,10 @@ static void main_window_unload(Window *window) {
     /* Destroy TextLayers */
     text_layer_destroy(s_time_layer);
     text_layer_destroy(s_date_layer);
-    text_layer_destroy(s_battery_layer);
 
 
     /* unsubscribe events */
     tick_timer_service_unsubscribe();
-    battery_state_service_unsubscribe();
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
@@ -322,7 +334,6 @@ static void init()
 
     /* Register events; TickTimerService, Battery */
     tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
-    battery_state_service_subscribe(handle_battery);
 
     /* TODO use AppSync instead? */
     app_message_register_inbox_received(in_recv_handler);

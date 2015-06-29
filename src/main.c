@@ -47,15 +47,15 @@
 #define KEY_TIME_COLOR 0
 #define KEY_VIBRATE_ON_DISCONNECT 1
 
-static Window    *s_main_window;
-static TextLayer *s_time_layer;
-static TextLayer *s_date_layer;
-static TextLayer *s_battery_layer;
-static TextLayer *s_bluetooth_layer;
+static Window    *s_main_window=NULL;
+static TextLayer *s_time_layer=NULL;
+static TextLayer *s_date_layer=NULL;
+static TextLayer *s_battery_layer=NULL;
+static TextLayer *s_bluetooth_layer=NULL;
 
 static GFont       s_time_font;
-static BitmapLayer *s_background_layer;
-static GBitmap     *s_background_bitmap;
+static BitmapLayer *s_background_layer=NULL;
+static GBitmap     *s_background_bitmap=NULL;
 /* For colors, see http://developer.getpebble.com/tools/color-picker/#0000FF */
 static GColor       time_color;  /* NOTE used for date too */
 static int          config_time_color;

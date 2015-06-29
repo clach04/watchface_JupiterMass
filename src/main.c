@@ -305,6 +305,8 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 static void init()
 {
+    time_color = COLOR_FALLBACK(GColorBlue, GColorWhite);
+
 #ifdef PBL_PLATFORM_BASALT
     /* TODO refactor */
     if (persist_exists(KEY_TIME_COLOR))
@@ -313,11 +315,7 @@ static void init()
         APP_LOG(APP_LOG_LEVEL_INFO, "Read time color: %x", config_time_color);
         time_color = COLOR_FALLBACK(GColorFromHEX(config_time_color), GColorWhite);
     }
-    else
 #endif /* PBL_PLATFORM_BASALT */
-    {
-        time_color = COLOR_FALLBACK(GColorBlue, GColorWhite);
-    }
 
     if (persist_exists(KEY_VIBRATE_ON_DISCONNECT))
     {

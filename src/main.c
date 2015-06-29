@@ -54,7 +54,6 @@ static TextLayer *s_battery_layer;
 static TextLayer *s_bluetooth_layer;
 
 static GFont       s_time_font;
-static GFont       s_date_font;
 static BitmapLayer *s_background_layer;
 static GBitmap     *s_background_bitmap;
 /* For colors, see http://developer.getpebble.com/tools/color-picker/#0000FF */
@@ -203,11 +202,8 @@ static void setup_date(Window *window)
     text_layer_set_text_color(s_date_layer, time_color);
     text_layer_set_text(s_date_layer, MAX_DATE_STR);
 
-    /* Create GFont */
-    s_date_font = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD);
-
     /* Apply to TextLayer */
-    text_layer_set_font(s_date_layer, s_date_font);
+    text_layer_set_font(s_date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
     text_layer_set_text_alignment(s_date_layer, GTextAlignmentRight);
 
     // Add it as a child layer to the Window's root layer

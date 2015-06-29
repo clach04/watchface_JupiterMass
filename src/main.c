@@ -195,6 +195,30 @@ static void update_date(struct tm *tick_time) {
     text_layer_set_text(s_date_layer, buffer);
 }
 
+static void setup_date(Window *window)
+{
+    /* Create date TextLayer */
+    s_date_layer = text_layer_create(DATE_POS);
+    text_layer_set_background_color(s_date_layer, GColorClear);
+    text_layer_set_text_color(s_date_layer, time_color);
+    text_layer_set_text(s_date_layer, MAX_DATE_STR);
+
+    /* Create GFont */
+    s_date_font = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD);
+
+    /* Apply to TextLayer */
+    text_layer_set_font(s_date_layer, s_date_font);
+    text_layer_set_text_alignment(s_date_layer, GTextAlignmentRight);
+
+    // Add it as a child layer to the Window's root layer
+    layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
+}
+
+static void cleanup_date()
+{
+    text_layer_destroy(s_date_layer);
+}
+
 static void update_time() {
     // Get a tm structure
     time_t    temp = time(NULL);
@@ -247,22 +271,7 @@ static void main_window_load(Window *window) {
     // Add it as a child layer to the Window's root layer
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
 
-    /* Create date TextLayer */
-    s_date_layer = text_layer_create(DATE_POS);
-    text_layer_set_background_color(s_date_layer, GColorClear);
-    text_layer_set_text_color(s_date_layer, time_color);
-    text_layer_set_text(s_date_layer, MAX_DATE_STR);
-
-    /* Create GFont */
-    s_date_font = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD);
-
-    /* Apply to TextLayer */
-    text_layer_set_font(s_date_layer, s_date_font);
-    text_layer_set_text_alignment(s_date_layer, GTextAlignmentRight);
-
-    // Add it as a child layer to the Window's root layer
-    layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
-
+    setup_date(window);
     setup_battery(window);
     setup_bluetooth(window);
 
@@ -275,6 +284,7 @@ static void main_window_load(Window *window) {
 static void main_window_unload(Window *window) {
     cleanup_bluetooth();
     cleanup_battery();
+    cleanup_date();
 
     /* Unload GFonts */
     fonts_unload_custom_font(s_time_font);
@@ -287,7 +297,6 @@ static void main_window_unload(Window *window) {
 
     /* Destroy TextLayers */
     text_layer_destroy(s_time_layer);
-    text_layer_destroy(s_date_layer);
 
 
     /* unsubscribe events */

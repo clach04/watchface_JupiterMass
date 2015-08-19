@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <title>Slate Example Configuration</title>
+  <title>Preferences</title>
   <link rel='stylesheet' type='text/css' href='css/slate.min.css'>
   <script src='js/slate.min.js'></script>
   <style>
@@ -18,42 +18,46 @@
   </head>
 
   <body>
-    <h1 class='title'>Slate Example Configuration</h1>
+    <h1 class='title'>Preferences</h1>
 
+    <!-- TODO consider removing this -->
     <div class='item-container'>
       <div class='item-container-content'>
         <div class='item'>
-          Use this configuration page to choose the settings you would like applied to this app.
+          Use this configuration page to choose the settings you would like applied.
         </div>
       </div>
     </div>
 
     <div class='item-container'>
-      <div class='item-container-header'>Customizability</div>
+      <div class='item-container-header'>Options</div>
       <div class='item-container-content'>
         <label class='item'>
-          Background Color
-          <input id='background_color_picker' type='text' class='item-color item-color-sunny' value='#000000'>
+          Time Color
+          <input id='time_color_picker' type='text' class='item-color item-color-sunny' value='#000000'>
         </label>
       </div>
       <div class='item-container-footer'>
-        Choose the app's background color. Used if High Contrast Mode is not selected. Note: Only available on Basalt watches that support many colors.
+        Choose the color for the Time. Note: Only available on Basalt watches that support many colors.
       </div>
     </div>
 
+    <!-- TODO Lose section, move vib option into above? -->
     <div class='item-container'>
-      <div class='item-container-header'>Accessibility</div>
+      <div class='item-container-header'>Vibrate</div>
       <div class='item-container-content'>
         <label class='item'>
-          High Contrast Mode
-          <input id='high_contrast_checkbox' type='checkbox' class='item-toggle'>
+          Vibrate on Bluetooth disconnect
+          <input id='vibrate_disconnect_checkbox' type='checkbox' class='item-toggle'>
         </label>
       </div>
       <div class='item-container-footer'>
-        This switches the app colors to a higher contrast set that promotes readability in low light.
+        By default will vibrate on bluetooth disconnect.
       </div>
     </div>
 
+    <!-- TODO Save rather than submit? -->
+    <!-- TODO Cancel button? -->
     <div class='item-container'>
       <div class='button-container'>
         <input id='submit_button' type='button' class='item-button' value='SUBMIT'>
@@ -62,17 +66,16 @@
   </body>
   <script>
   function getConfigData() {
-    var backgroundColorPicker = document.getElementById('background_color_picker');
-    var highContrastCheckbox = document.getElementById('high_contrast_checkbox');
- 
     var options = {
-      'background_color': backgroundColorPicker.value,
-      'high_contrast': highContrastCheckbox.checked
+      'time_color': document.getElementById('time_color_picker').value,
+      'vibrate_disconnect': document.getElementById('vibrate_disconnect_checkbox').checked
     };
 
+    options['color'] = options['time_color']; // FIXME color is for backwards compat...
+
     // Save for next launch
-    localStorage['background_color'] = options['background_color'];
-    localStorage['high_contrast'] = options['high_contrast'];
+    localStorage['time_color'] = options['color'];
+    localStorage['vibrate_disconnect'] = options['vibrate_disconnect'];
 
     console.log('Got options: ' + JSON.stringify(options));
     return options;
@@ -100,13 +103,14 @@
   });
 
   (function() {
-    var backgroundColorPicker = document.getElementById('background_color_picker');
-    var highContrastCheckbox = document.getElementById('high_contrast_checkbox');
+    // FIXME pick these up as URL parameters...
+    var backgroundColorPicker = document.getElementById('time_color_picker');
+    var highContrastCheckbox = document.getElementById('vibrate_disconnect_checkbox');
 
     // Load any previously saved configuration, if available
-    if(localStorage['high_contrast']) {
-      highContrastCheckbox.checked = JSON.parse(localStorage['high_contrast']);
-      backgroundColorPicker.value = localStorage['background_color'];
+    if(localStorage['vibrate_disconnect']) {
+      highContrastCheckbox.checked = JSON.parse(localStorage['vibrate_disconnect']);
+      backgroundColorPicker.value = localStorage['time_color'];
     }
   })();
   </script>

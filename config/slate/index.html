@@ -65,17 +65,59 @@
     </div>
   </body>
   <script>
+  function getHexStrColorWith0x(in_str) {
+    /*
+    ** Returns hex string WITH a leading 0x
+    */
+    if (in_str.startsWith('0x'))
+    {
+        return in_str;
+    }
+    else
+    {
+        return '0x' + in_str;
+    }
+  }
+
+  function getHexStrColorWithOut0x(in_str) {
+    /*
+    ** Returns hex string withOUT a leading 0x
+    */
+    if (in_str.startsWith('0x'))
+    {
+        return in_str.substr(2, 6);
+    }
+    else
+    {
+        return in_str;
+    }
+  }
+
+  function getBoolValue(in_value) {
+    var result=false;
+                switch (in_value) {
+                    case true:
+                    case 'true':
+                    case 'True':
+                    case 'TRUE':
+                    case 1:
+                    case '1':
+                    case 'on':
+                        result = true;
+                        break;
+                    default:
+                        result = false;
+                        break;
+                }
+  }
+
   function getConfigData() {
     var options = {
-      'time_color': document.getElementById('time_color_picker').value,
+      'time_color': getHexStrColorWithOut0x(document.getElementById('time_color_picker').value),
       'vibrate_disconnect': document.getElementById('vibrate_disconnect_checkbox').checked
     };
 
     options['color'] = options['time_color']; // FIXME color is for backwards compat...
-
-    // Save for next launch
-    localStorage['time_color'] = options['color'];
-    localStorage['vibrate_disconnect'] = options['vibrate_disconnect'];
 
     console.log('Got options: ' + JSON.stringify(options));
     return options;
@@ -103,15 +145,10 @@
   });
 
   (function() {
-    // FIXME pick these up as URL parameters...
-    var backgroundColorPicker = document.getElementById('time_color_picker');
-    var highContrastCheckbox = document.getElementById('vibrate_disconnect_checkbox');
-
-    // Load any previously saved configuration, if available
-    if(localStorage['vibrate_disconnect']) {
-      highContrastCheckbox.checked = JSON.parse(localStorage['vibrate_disconnect']);
-      backgroundColorPicker.value = localStorage['time_color'];
-    }
+    var color = getQueryParam('time_color', '000000');
+    // pick URL parameters...
+    document.getElementById('time_color_picker').value = getHexStrColorWith0x(getQueryParam('time_color', color));
+    document.getElementById('vibrate_disconnect_checkbox').checked = getBoolValue(getQueryParam('vibrate_disconnect', 'off'));
   })();
   </script>
 </html>

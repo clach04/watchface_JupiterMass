@@ -1,5 +1,6 @@
 {
     "appKeys": {
+        "KEY_BACKGROUND_COLOR": 2,
         "KEY_TIME_COLOR": 0,
         "KEY_VIBRATE_ON_DISCONNECT": 1
     },

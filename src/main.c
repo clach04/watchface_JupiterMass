@@ -33,8 +33,6 @@
 //#define BG_IMAGE RESOURCE_ID_IMAGE_N7LOGO_WHITE
 #define BG_IMAGE RESOURCE_ID_IMAGE_N7LOGO
 
-#define FONT_BAT_COLOR GColorWhite
-
 #define FONT_NAME RESOURCE_ID_FONT_JUPITER_60
 
 #define CLOCK_POS GRect(0, 52, 144, 168) /* probably taller than really needed */
@@ -46,6 +44,7 @@
 // FIXME why can't this be generated from the json settings file into a header?
 #define KEY_TIME_COLOR 0
 #define KEY_VIBRATE_ON_DISCONNECT 1
+#define KEY_BACKGROUND_COLOR 2
 
 static Window    *s_main_window=NULL;
 static TextLayer *s_time_layer=NULL;
@@ -60,6 +59,7 @@ static GBitmap     *s_background_bitmap=NULL;
 static GColor       time_color;  /* NOTE used for date too */
 static GColor       background_color;
 static int          config_time_color;
+static int          config_background_color;
 static bool         config_time_vib_on_disconnect = false;
 
 static int last_day = -1;
@@ -89,13 +89,25 @@ static void in_recv_handler(DictionaryIterator *iterator, void *context)
                 time_color = COLOR_FALLBACK(GColorFromHEX(config_time_color), GColorWhite);
                 text_layer_set_text_color(s_time_layer, time_color);
                 text_layer_set_text_color(s_date_layer, time_color);
+                text_layer_set_text_color(s_bluetooth_layer, time_color);
                 break;
+
+            case KEY_BACKGROUND_COLOR:
+                APP_LOG(APP_LOG_LEVEL_DEBUG, "got KEY_BACKGROUND_COLOR");
+                config_background_color = (int)t->value->int32;
+                APP_LOG(APP_LOG_LEVEL_DEBUG, "Persisting background color: 0x%06x", config_background_color);
+                persist_write_int(KEY_BACKGROUND_COLOR, config_background_color);
+                background_color = COLOR_FALLBACK(GColorFromHEX(config_background_color), GColorWhite); // FIXME Aplite colors inverted?
+                window_set_background_color(s_main_window, background_color);
+                break;
+
             case KEY_VIBRATE_ON_DISCONNECT:
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "got KEY_VIBRATE_ON_DISCONNECT");
                 config_time_vib_on_disconnect = (bool)t->value->int32;  /* this doesn't feel correct... */
                 APP_LOG(APP_LOG_LEVEL_INFO, "Persisting vib_on_disconnect: %d", (int) config_time_vib_on_disconnect);
                 persist_write_bool(KEY_VIBRATE_ON_DISCONNECT, config_time_vib_on_disconnect);
                 break;
+
             default:
                 APP_LOG(APP_LOG_LEVEL_ERROR, "Unknown key %d! :-(", (int) t->key);
                 break;
@@ -126,7 +138,7 @@ static void handle_bluetooth(bool connected)
 static void setup_bluetooth(Window *window)
 {
     s_bluetooth_layer = text_layer_create(BT_POS);
-    text_layer_set_text_color(s_bluetooth_layer, FONT_BAT_COLOR);
+    text_layer_set_text_color(s_bluetooth_layer, time_color);
     text_layer_set_background_color(s_bluetooth_layer, GColorClear);
     text_layer_set_font(s_bluetooth_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
     text_layer_set_text_alignment(s_bluetooth_layer, GTextAlignmentCenter);
@@ -148,7 +160,7 @@ static void handle_battery(BatteryChargeState charge_state) {
 
     if (charge_state.is_charging) {
         snprintf(battery_text, sizeof(battery_text), "Charging");
-        text_layer_set_text_color(s_battery_layer, COLOR_FALLBACK(GColorGreen, FONT_BAT_COLOR));
+        text_layer_set_text_color(s_battery_layer, COLOR_FALLBACK(GColorGreen, time_color));
     } else {
         snprintf(battery_text, sizeof(battery_text), "Bat: %d%%", charge_state.charge_percent);
 #ifdef PBL_PLATFORM_BASALT
@@ -160,7 +172,7 @@ static void handle_battery(BatteryChargeState charge_state) {
         else /* TODO different colors for different ranges */
         {
             /* TODO is this an expensive call ? */
-            text_layer_set_text_color(s_battery_layer, FONT_BAT_COLOR);
+            text_layer_set_text_color(s_battery_layer, time_color);
         }
 #endif
     }
@@ -171,7 +183,7 @@ static void handle_battery(BatteryChargeState charge_state) {
 static void setup_battery(Window *window)
 {
     s_battery_layer = text_layer_create(BAT_POS);
-    text_layer_set_text_color(s_battery_layer, FONT_BAT_COLOR);
+    text_layer_set_text_color(s_battery_layer, time_color);
     text_layer_set_background_color(s_battery_layer, GColorClear);
     text_layer_set_font(s_battery_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
     text_layer_set_text_alignment(s_battery_layer, GTextAlignmentLeft);
@@ -259,8 +271,6 @@ static void main_window_load(Window *window) {
      bitmap_layer_set_compositing_mode(s_background_layer, GCompOpSet);
 #endif
 
-    //background_color = COLOR_FALLBACK(GColorCyan, GColorBlack); /* Start of Pebble Time ONLY background color support */
-    background_color = COLOR_FALLBACK(GColorBlack, GColorBlack);
     window_set_background_color(window, background_color);
 
     layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_background_layer));
@@ -321,6 +331,8 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 static void init()
 {
     time_color = COLOR_FALLBACK(GColorBlue, GColorWhite);
+    //background_color = COLOR_FALLBACK(GColorCyan, GColorBlack); /* Start of Pebble Time ONLY background color support */
+    background_color = COLOR_FALLBACK(GColorBlack, GColorBlack);
 
 #ifdef PBL_PLATFORM_BASALT
     /* TODO refactor */
@@ -329,6 +341,12 @@ static void init()
         config_time_color = persist_read_int(KEY_TIME_COLOR);
         APP_LOG(APP_LOG_LEVEL_INFO, "Read time color: %x", config_time_color);
         time_color = COLOR_FALLBACK(GColorFromHEX(config_time_color), GColorWhite);
+    }
+    if (persist_exists(KEY_BACKGROUND_COLOR))
+    {
+        config_background_color = persist_read_int(KEY_BACKGROUND_COLOR);
+        APP_LOG(APP_LOG_LEVEL_INFO, "Read background color: %x", config_background_color);
+        background_color = COLOR_FALLBACK(GColorFromHEX(config_background_color), GColorBlack);
     }
 #endif /* PBL_PLATFORM_BASALT */
 

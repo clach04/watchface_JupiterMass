@@ -22,7 +22,8 @@ Pebble.addEventListener('showConfiguration', function(e) {
   }
 
   //var URL = 'http://clach04.github.io/pebble/JupiterMass/nojquery_pebble-config.html' +
-  var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html' +
+  //var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html' +
+  var URL = 'http://clach04.github.io/pebble/JupiterMass/slate/index.html' +
       '?' +
       'color=' + color + '&' +
       'vibrate_disconnect=' + vibrate_disconnect;
@@ -37,6 +38,9 @@ Pebble.addEventListener('webviewclosed',
         try {
             var configuration = JSON.parse(decodeURIComponent(e.response));
             var vibrate_disconnect = 0;
+
+            console.log('dictionary to validate ' + JSON.stringify(configuration));
+
             if ('vibrate_disconnect' in configuration)
             {
                 switch (configuration.vibrate_disconnect) {
@@ -62,6 +66,7 @@ Pebble.addEventListener('webviewclosed',
             localStorage.setItem('color', configuration.color);
             console.log('vibrate_disconnect ' + configuration.vibrate_disconnect);
             localStorage.setItem('vibrate_disconnect', configuration.vibrate_disconnect);
+            console.log('dictionary to send ' + JSON.stringify(dictionary));
             // Send to Pebble
             Pebble.sendAppMessage(dictionary,
                 function(e) {

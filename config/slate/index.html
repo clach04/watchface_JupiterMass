@@ -145,7 +145,7 @@
   });
 
   (function() {
-    var color = getQueryParam('time_color', '000000');
+    var color = getQueryParam('color', '000000');
     // pick URL parameters...
     document.getElementById('time_color_picker').value = getHexStrColorWith0x(getQueryParam('time_color', color));
     document.getElementById('vibrate_disconnect_checkbox').checked = getBoolValue(getQueryParam('vibrate_disconnect', 'off'));

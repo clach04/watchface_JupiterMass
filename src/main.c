@@ -58,6 +58,7 @@ static BitmapLayer *s_background_layer=NULL;
 static GBitmap     *s_background_bitmap=NULL;
 /* For colors, see http://developer.getpebble.com/tools/color-picker/#0000FF */
 static GColor       time_color;  /* NOTE used for date too */
+static GColor       background_color;
 static int          config_time_color;
 static bool         config_time_vib_on_disconnect = false;
 
@@ -243,11 +244,25 @@ static void update_time() {
 }
 
 static void main_window_load(Window *window) {
+    Layer *window_layer = window_get_root_layer(window);
+    GRect bounds = layer_get_bounds(window_layer);
+
     // Create GBitmap, then set to created BitmapLayer
     s_background_bitmap = gbitmap_create_with_resource(BG_IMAGE);
     
-    s_background_layer = bitmap_layer_create(GRect(0, 0, 144, 168));
+    s_background_layer = bitmap_layer_create(bounds);
     bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+
+#ifdef PBL_PLATFORM_APLITE
+     bitmap_layer_set_compositing_mode(s_background_layer, GCompOpAssign);
+#elif PBL_PLATFORM_BASALT
+     bitmap_layer_set_compositing_mode(s_background_layer, GCompOpSet);
+#endif
+
+    //background_color = COLOR_FALLBACK(GColorCyan, GColorBlack); /* Start of Pebble Time ONLY background color support */
+    background_color = COLOR_FALLBACK(GColorBlack, GColorBlack);
+    window_set_background_color(window, background_color);
+
     layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_background_layer));
 
     // Create time TextLayer

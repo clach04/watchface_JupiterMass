@@ -31,15 +31,27 @@
 
     <div class='item-container'>
       <div class='item-container-header'>Options</div>
+
       <div class='item-container-content'>
         <label class='item'>
           Time Color
-          <input id='time_color_picker' type='text' class='item-color item-color-sunny' value='#000000'>
+          <input id='time_color_picker' type='text' class='item-color item-color-normal' value='#000000'>
         </label>
       </div>
       <div class='item-container-footer'>
         Choose the color for the Time. Note: Only available on Basalt watches that support many colors.
       </div>
+
+      <div class='item-container-content'>
+        <label class='item'>
+          Background Color
+          <input id='background_color_picker' type='text' class='item-color item-color-normal' value='#000000'>
+        </label>
+      </div>
+      <div class='item-container-footer'>
+        Choose the color for the Background. Note: Only available on Basalt watches that support many colors.
+      </div>
+
     </div>
 
     <!-- TODO Lose section, move vib option into above? -->
@@ -114,10 +126,9 @@
   function getConfigData() {
     var options = {
       'time_color': getHexStrColorWithOut0x(document.getElementById('time_color_picker').value),
+      'background_color': getHexStrColorWithOut0x(document.getElementById('background_color_picker').value),
       'vibrate_disconnect': document.getElementById('vibrate_disconnect_checkbox').checked
     };
-
-    options['color'] = options['time_color']; // FIXME color is for backwards compat...
 
     console.log('Got options: ' + JSON.stringify(options));
     return options;
@@ -145,9 +156,9 @@
   });
 
   (function() {
-    var color = getQueryParam('color', '000000');
     // pick URL parameters...
-    document.getElementById('time_color_picker').value = getHexStrColorWith0x(getQueryParam('time_color', color));
+    document.getElementById('time_color_picker').value = getHexStrColorWith0x(getQueryParam('time_color', 'FFFFFF'));
+    document.getElementById('background_color_picker').value = getHexStrColorWith0x(getQueryParam('background_color', '000000'));
     document.getElementById('vibrate_disconnect_checkbox').checked = getBoolValue(getQueryParam('vibrate_disconnect', 'off'));
   })();
   </script>

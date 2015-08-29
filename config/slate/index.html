@@ -156,6 +156,14 @@
   });
 
   (function() {
+        // as of 2015-08 not part of Chrome/Webkit in Pebble for Android
+        if (typeof String.prototype.startsWith != 'function') {
+          // see below for better implementation!
+          String.prototype.startsWith = function (str){
+            return this.indexOf(str) === 0;
+          };
+        }
+
     // pick URL parameters...
     document.getElementById('time_color_picker').value = getHexStrColorWith0x(getQueryParam('time_color', 'FFFFFF'));
     document.getElementById('background_color_picker').value = getHexStrColorWith0x(getQueryParam('background_color', '000000'));

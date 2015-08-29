@@ -96,7 +96,7 @@ static void in_recv_handler(DictionaryIterator *iterator, void *context)
                 persist_write_bool(KEY_VIBRATE_ON_DISCONNECT, config_time_vib_on_disconnect);
                 break;
             default:
-                APP_LOG(APP_LOG_LEVEL_ERROR, "Unknown key! :-(");
+                APP_LOG(APP_LOG_LEVEL_ERROR, "Unknown key %d! :-(", (int) t->key);
                 break;
         }
         t = dict_read_next(iterator);

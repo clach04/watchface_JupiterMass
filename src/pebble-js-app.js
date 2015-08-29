@@ -1,9 +1,9 @@
 Pebble.addEventListener('showConfiguration', function(e) {
-  var color = localStorage.getItem('color');
-  if (! color)
+  var time_color = localStorage.getItem('time_color');
+  if (!time_color)
   {
       // http://developer.getpebble.com/tools/color-picker/#0000FF
-      color = "0000FF";  // GColorBlue
+      time_color = "0000FF";  // GColorBlue
   }
   var vibrate_disconnect_str = 'off';
   var vibrate_disconnect = localStorage.getItem('vibrate_disconnect');
@@ -25,7 +25,7 @@ Pebble.addEventListener('showConfiguration', function(e) {
   //var URL = 'http://clach04.github.io/pebble/JupiterMass/pebble-config.html' +
   var URL = 'http://clach04.github.io/pebble/JupiterMass/slate/index.html' +
       '?' +
-      'color=' + color + '&' +
+      'time_color=' + time_color + '&' +
       'vibrate_disconnect=' + vibrate_disconnect;
   console.log('Configuration window opened. ' + URL);
   Pebble.openURL(URL);
@@ -59,11 +59,11 @@ Pebble.addEventListener('webviewclosed',
                 }
             }
             var dictionary = {
-              "KEY_TIME_COLOR": parseInt(configuration.color, 16),
+              "KEY_TIME_COLOR": parseInt(configuration.time_color, 16),
               "KEY_VIBRATE_ON_DISCONNECT": vibrate_disconnect
             };
-            console.log('Color ' + configuration.color);
-            localStorage.setItem('color', configuration.color);
+            console.log('time_color ' + configuration.time_color);
+            localStorage.setItem('time_color', configuration.time_color);
             console.log('vibrate_disconnect ' + configuration.vibrate_disconnect);
             localStorage.setItem('vibrate_disconnect', configuration.vibrate_disconnect);
             console.log('dictionary to send ' + JSON.stringify(dictionary));

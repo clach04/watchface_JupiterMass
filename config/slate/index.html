@@ -107,20 +107,22 @@
 
   function getBoolValue(in_value) {
     var result=false;
-                switch (in_value) {
-                    case true:
-                    case 'true':
-                    case 'True':
-                    case 'TRUE':
-                    case 1:
-                    case '1':
-                    case 'on':
-                        result = true;
-                        break;
-                    default:
-                        result = false;
-                        break;
-                }
+
+    switch (in_value) {
+        case true:
+        case 'true':
+        case 'True':
+        case 'TRUE':
+        case 1:
+        case '1':
+        case 'on':
+            result = true;
+            break;
+        default:
+            result = false;
+            break;
+    }
+    return result;
   }
 
   function getConfigData() {

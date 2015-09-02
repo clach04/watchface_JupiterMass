@@ -21,7 +21,7 @@
             {
                 "characterRegex": "[0-9:]",
                 "file": "fonts/jupiter.ttf",
-                "name": "FONT_JUPITER_60",
+                "name": "FONT_JUPITER_ALPHABOT_XEN_60",
                 "type": "font"
             },
             {

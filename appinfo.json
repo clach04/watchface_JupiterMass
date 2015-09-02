@@ -20,7 +20,7 @@
             },
             {
                 "characterRegex": "[0-9:]",
-                "file": "fonts/jupiter.ttf",
+                "file": "fonts/ISL_Jupiter_Alphabot_Xen.ttf",
                 "name": "FONT_JUPITER_ALPHABOT_XEN_60",
                 "type": "font"
             },

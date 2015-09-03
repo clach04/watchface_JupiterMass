@@ -255,6 +255,7 @@ static void update_time(bool debug_time) {
     // Create a long-lived buffer
     static char buffer[] = MAX_TIME_STR;
 
+#ifdef DEBUG_TIME
     if (debug_time)
     {
         static int     str_counter=0;
@@ -267,6 +268,7 @@ static void update_time(bool debug_time) {
         }
     }
     else
+#endif /* DEBUG_TIME */
     {
         // Write the current hours and minutes into the buffer
         if(clock_is_24h_style() == true) {

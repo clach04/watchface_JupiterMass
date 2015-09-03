@@ -70,6 +70,25 @@ static bool bluetooth_state = false;
 #define MAX_TIME_STR "00:00"
 #define MAX_BAT_STR "Bat: ??%"
 
+//#define DEBUG_TIME
+#ifdef DEBUG_TIME
+char * debug_time_list[] = {
+    "00:00",
+    "01:01",
+    "11:11",
+    "12:34",
+    "22:22",
+    "23:50",
+    "25:55",
+    /* 12 hour format withOUT leading zero, or space */
+    "1:01",
+    "8:55",
+    /* 12 hour format withOUT leading zero, with  space */
+    " 1:01",
+    " 8:55",
+    NULL
+};
+#endif /* DEBUG_TIME */
 
 static void in_recv_handler(DictionaryIterator *iterator, void *context)
 {
@@ -228,7 +247,7 @@ static void cleanup_date()
     text_layer_destroy(s_date_layer);
 }
 
-static void update_time() {
+static void update_time(bool debug_time) {
     // Get a tm structure
     time_t    temp = time(NULL);
     struct tm *tick_time = localtime(&temp);
@@ -236,13 +255,27 @@ static void update_time() {
     // Create a long-lived buffer
     static char buffer[] = MAX_TIME_STR;
 
-    // Write the current hours and minutes into the buffer
-    if(clock_is_24h_style() == true) {
-        // 24h hour format
-        strftime(buffer, sizeof(buffer), "%H:%M", tick_time);
-    } else {
-        // 12 hour format
-        strftime(buffer, sizeof(buffer), "%I:%M", tick_time);
+    if (debug_time)
+    {
+        static int     str_counter=0;
+
+        strcpy(buffer, debug_time_list[str_counter]);
+        str_counter++;
+        if (debug_time_list[str_counter] == NULL)
+        {
+            str_counter = 0;
+        }
+    }
+    else
+    {
+        // Write the current hours and minutes into the buffer
+        if(clock_is_24h_style() == true) {
+            // 24h hour format
+            strftime(buffer, sizeof(buffer), "%H:%M", tick_time);
+        } else {
+            // 12 hour format
+            strftime(buffer, sizeof(buffer), "%I:%M", tick_time);
+        }
     }
 
     /* Update the date only when the day changes */
@@ -297,7 +330,7 @@ static void main_window_load(Window *window) {
     setup_bluetooth(window);
 
     /* Make sure the time is displayed from the start */
-    update_time();
+    update_time(false);
     /* Ensure battery status is displayed from the start */
     handle_battery(battery_state_service_peek());
 }
@@ -325,8 +358,14 @@ static void main_window_unload(Window *window) {
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-    update_time();
+    update_time(false);
 }
+
+#ifdef DEBUG_TIME
+static void debug_tick_handler(struct tm *tick_time, TimeUnits units_changed) {
+    update_time(true);
+}
+#endif /* DEBUG_TIME */
 
 static void init()
 {
@@ -370,6 +409,9 @@ static void init()
 
     /* Register events; TickTimerService, Battery */
     tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+#ifdef DEBUG_TIME
+    tick_timer_service_subscribe(SECOND_UNIT, debug_tick_handler);
+#endif /* DEBUG_TIME */
 
     /* TODO use AppSync instead? */
     app_message_register_inbox_received(in_recv_handler);

@@ -16,6 +16,6 @@ Acknowledgements
 
   * Font ISL Jupiter by Isurus Labs (http://www.dafont.com/isl-jupiter.font)
   * N7 Logo Vector by Karlika (http://karlika.deviantart.com/art/Mass-Effect-Vector-Pack-178422616)
-  * html/js for color configuration based on code by https://github.com/rgarth for 
+  * html/js for color configuration based on code by https://github.com/rgarth and Slate https://github.com/pebble/slate
 
 Store URL https://apps.getpebble.com/en_US/application/556a4727da4c418e7800006f

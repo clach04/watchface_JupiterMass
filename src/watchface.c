@@ -188,8 +188,10 @@ void main_window_load(Window *window) {
     text_layer_set_text_color(s_time_layer, time_color);
     text_layer_set_text(s_time_layer, "00:00");
 
+#ifdef FONT_NAME
     // Create GFont
     s_time_font = fonts_load_custom_font(resource_get_handle(FONT_NAME));
+#endif /* FONT_NAME */
 
     // Apply to TextLayer
     text_layer_set_font(s_time_layer, s_time_font);
@@ -214,8 +216,10 @@ void main_window_unload(Window *window) {
     cleanup_battery();
     cleanup_date();
 
+#ifdef FONT_NAME
     /* Unload GFonts */
     fonts_unload_custom_font(s_time_font);
+#endif /* FONT_NAME */
 
     /* Destroy GBitmap */
     gbitmap_destroy(s_background_bitmap);

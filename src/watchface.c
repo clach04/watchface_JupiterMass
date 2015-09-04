@@ -69,7 +69,7 @@ void handle_battery(BatteryChargeState charge_state) {
         snprintf(battery_text, sizeof(battery_text), "Charging");
         text_layer_set_text_color(s_battery_layer, COLOR_FALLBACK(GColorGreen, time_color));
     } else {
-        snprintf(battery_text, sizeof(battery_text), "Bat: %d%%", charge_state.charge_percent);
+        snprintf(battery_text, sizeof(battery_text), BAT_FMT_STR, charge_state.charge_percent);
 #ifdef PBL_PLATFORM_BASALT
         /* TODO Check charge level and change color? E.g. red at 10%/20% */
         if (charge_state.charge_percent <= 20)

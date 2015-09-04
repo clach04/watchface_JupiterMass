@@ -21,7 +21,9 @@
 
 #define MAX_DATE_STR "Thu, 00 Aug"
 #define MAX_TIME_STR "00:00"
-#define MAX_BAT_STR "Bat: ??%"
+
+#define BAT_FMT_STR "Bat: %d%%"
+#define MAX_BAT_STR "Bat: ??%"  // When Battery is 100, the percent symbol is deliberately not shown (buffer full/truncated)
 
 extern Window    *s_main_window;
 extern TextLayer *s_time_layer;

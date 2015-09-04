@@ -19,7 +19,9 @@
 #define KEY_VIBRATE_ON_DISCONNECT 1
 #define KEY_BACKGROUND_COLOR 2
 
+#define DATE_FMT_STR "%a, %d %b"  /* TODO review %d for day */
 #define MAX_DATE_STR "Thu, 00 Aug"
+
 #define MAX_TIME_STR "00:00"
 
 #define BAT_FMT_STR "Bat: %d%%"

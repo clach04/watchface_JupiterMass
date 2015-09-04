@@ -110,7 +110,7 @@ void update_date(struct tm *tick_time) {
     static char buffer[] = MAX_DATE_STR;  /* FIXME use same buffer, one for both date and time? */
 
     last_day = tick_time->tm_mday;
-    strftime(buffer, sizeof(buffer), "%a, %d %b", tick_time); /* TODO review %d for day */
+    strftime(buffer, sizeof(buffer), DATE_FMT_STR, tick_time);
     text_layer_set_text(s_date_layer, buffer);
 }
 

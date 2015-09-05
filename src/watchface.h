@@ -19,7 +19,9 @@
 
 #define MAX_TIME_STR "00:00"
 
+#ifndef BAT_FMT_STR
 #define BAT_FMT_STR "Bat: %d%%"
+#endif /* BAT_FMT_STR */
 #define MAX_BAT_STR "Bat: ??%"  // When Battery is 100, the percent symbol is deliberately not shown (buffer full/truncated)
 
 extern Window    *s_main_window;

@@ -22,6 +22,25 @@ bool         config_time_vib_on_disconnect = false;
 int last_day = -1;
 bool bluetooth_state = false;
 
+#ifdef DEBUG_TIME
+char * debug_time_list[] = {
+    "00:00",
+    "01:01",
+    "11:11",
+    "12:34",
+    "22:22",
+    "23:50",
+    "25:55",
+    /* 12 hour format withOUT leading zero, or space */
+    "1:01",
+    "8:55",
+    /* 12 hour format withOUT leading zero, with  space */
+    " 1:01",
+    " 8:55",
+    NULL
+};
+#endif /* DEBUG_TIME */
+
 void handle_bluetooth(bool connected)
 {
     /* TODO use gfx not text */
@@ -143,20 +162,35 @@ void update_time() {
     // Create a long-lived buffer
     static char buffer[] = MAX_TIME_STR;
 
-    // Write the current hours and minutes into the buffer
-    if(clock_is_24h_style() == true) {
-        // 24h hour format
-        strftime(buffer, sizeof(buffer), "%H:%M", tick_time);
-    } else {
-        // 12 hour format
-        strftime(buffer, sizeof(buffer), "%I:%M", tick_time);  // produces leading zero for hour and minute
-#ifdef REMOVE_LEADING_ZERO_FROM_TIME
-        if (buffer[0] == '0')
+#ifdef DEBUG_TIME
+    {
+        static int     str_counter=0;
+
+        strcpy(buffer, debug_time_list[str_counter]);
+        str_counter++;
+        if (debug_time_list[str_counter] == NULL)
         {
-            memmove(&buffer[0], &buffer[1], sizeof(buffer) - 1); // remove leading zero
+            str_counter = 0;
         }
-#endif /* REMOVE_LEADING_ZERO_FROM_TIME */
     }
+#else
+    {
+        // Write the current hours and minutes into the buffer
+        if(clock_is_24h_style() == true) {
+            // 24h hour format
+            strftime(buffer, sizeof(buffer), "%H:%M", tick_time);
+        } else {
+            // 12 hour format
+            strftime(buffer, sizeof(buffer), "%I:%M", tick_time); // produces leading zero for hour and minute
+#ifdef REMOVE_LEADING_ZERO_FROM_TIME
+            if (buffer[0] == '0')
+            {
+                memmove(&buffer[0], &buffer[1], sizeof(buffer) - 1); // remove leading zero
+            }
+#endif /* REMOVE_LEADING_ZERO_FROM_TIME */
+        }
+    }
+#endif /* DEBUG_TIME */
 
     /* Update the date only when the day changes */
     if (last_day != tick_time->tm_mday)
@@ -247,13 +281,17 @@ void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
     update_time();
 }
 
+#ifdef DEBUG_TIME
+void debug_tick_handler(struct tm *tick_time, TimeUnits units_changed) {
+    update_time();
+}
+#endif /* DEBUG_TIME */
+
 void deinit() {
     // Destroy Window
     window_destroy(s_main_window);
 }
 
-
-    
 void in_recv_handler(DictionaryIterator *iterator, void *context)
 {
     Tuple *t=NULL;
@@ -341,11 +379,15 @@ void init()
 
     /* Register events; TickTimerService, Battery */
     tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+#ifdef DEBUG_TIME
+    tick_timer_service_subscribe(SECOND_UNIT, debug_tick_handler);
+#endif /* DEBUG_TIME */
 
     /* TODO use AppSync instead? */
     app_message_register_inbox_received(in_recv_handler);
     app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum()); 
 }
+
 
 #ifdef USE_GENERIC_MAIN
 int main(void) {

@@ -28,6 +28,12 @@
                 "menuIcon": true,
                 "name": "IMAGE_ICON",
                 "type": "png"
+            },
+            {
+                "file": "images/n7_logo_icon_c_pebble_mono.png",
+                "menuIcon": true,
+                "name": "IMAGE_ICON",
+                "type": "png"
             }
         ]
     },
@@ -38,7 +44,7 @@
         "basalt"
     ],
     "uuid": "0ae8bb7b-9ecd-4e71-8fd8-7877db474401",
-    "versionLabel": "0.4",
+    "versionLabel": "0.5",
     "watchapp": {
         "watchface": true
     }

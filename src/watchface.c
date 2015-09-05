@@ -31,7 +31,7 @@ void handle_bluetooth(bool connected)
     }
     else
     {
-        text_layer_set_text(s_bluetooth_layer, "BT Disconnected");
+        text_layer_set_text(s_bluetooth_layer, BLUETOOTH_DISCONNECTED_STR);
         if (config_time_vib_on_disconnect && (bluetooth_state != connected))
         {
             /* had BT connection then lost it, rather than started disconnected */

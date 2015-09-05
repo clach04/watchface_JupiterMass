@@ -20,6 +20,8 @@
 #define KEY_VIBRATE_ON_DISCONNECT 1
 #define KEY_BACKGROUND_COLOR 2
 
+#define BLUETOOTH_DISCONNECTED_STR "BT Disconnected"
+
 #define DATE_FMT_STR "%a, %d %b"  /* TODO review %d for day */
 #define MAX_DATE_STR "Thu, 00 Aug"
 

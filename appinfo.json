@@ -28,12 +28,6 @@
                 "menuIcon": true,
                 "name": "IMAGE_ICON",
                 "type": "png"
-            },
-            {
-                "file": "images/n7_logo_icon_c_pebble_mono.png",
-                "menuIcon": true,
-                "name": "IMAGE_ICON",
-                "type": "png"
             }
         ]
     },

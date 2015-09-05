@@ -197,6 +197,8 @@ void main_window_load(Window *window) {
 #ifdef FONT_NAME
     // Create GFont
     s_time_font = fonts_load_custom_font(resource_get_handle(FONT_NAME));
+#else
+    s_time_font = fonts_get_system_font(FONT_SYSTEM_NAME);
 #endif /* FONT_NAME */
 
     // Apply to TextLayer

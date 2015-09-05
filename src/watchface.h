@@ -24,6 +24,13 @@
 #endif /* BAT_FMT_STR */
 #define MAX_BAT_STR "Bat: ??%"  // When Battery is 100, the percent symbol is deliberately not shown (buffer full/truncated)
 
+#ifndef FONT_SYSTEM_NAME
+/*
+** Also consider FONT_KEY_BITHAM_42_BOLD, FONT_KEY_ROBOTO_CONDENSED_21
+*/
+#define FONT_SYSTEM_NAME FONT_KEY_ROBOTO_BOLD_SUBSET_49
+#endif /* FONT_SYSTEM_NAME */
+
 #ifndef BT_ALIGN
 #define BT_ALIGN GTextAlignmentCenter
 #endif /* BT_ALIGN */

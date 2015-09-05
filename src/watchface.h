@@ -24,6 +24,26 @@
 #endif /* BAT_FMT_STR */
 #define MAX_BAT_STR "Bat: ??%"  // When Battery is 100, the percent symbol is deliberately not shown (buffer full/truncated)
 
+#ifndef BT_ALIGN
+#define BT_ALIGN GTextAlignmentCenter
+#endif /* BT_ALIGN */
+
+#ifndef BAT_ALIGN
+#define BAT_ALIGN GTextAlignmentLeft
+#endif /* BAT_ALIGN */
+
+#ifndef TIME_ALIGN
+#define TIME_ALIGN GTextAlignmentCenter
+#endif /* TIME_ALIGN */
+
+#ifndef DEFAULT_TIME_COLOR
+#define DEFAULT_TIME_COLOR GColorWhite
+#endif /* DEFAULT_TIME_COLOR */
+
+#ifndef DEFAULT_BACKGROUND_COLOR
+#define DEFAULT_BACKGROUND_COLOR GColorBlack
+#endif /* DEFAULT_BACKGROUND_COLOR */
+
 extern Window    *s_main_window;
 extern TextLayer *s_time_layer;
 extern TextLayer *s_date_layer;

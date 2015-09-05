@@ -48,7 +48,7 @@ void setup_bluetooth(Window *window)
     text_layer_set_text_color(s_bluetooth_layer, time_color);
     text_layer_set_background_color(s_bluetooth_layer, GColorClear);
     text_layer_set_font(s_bluetooth_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
-    text_layer_set_text_alignment(s_bluetooth_layer, GTextAlignmentCenter);
+    text_layer_set_text_alignment(s_bluetooth_layer, BT_ALIGN);
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_bluetooth_layer));
     text_layer_set_text(s_bluetooth_layer, "");
 
@@ -93,7 +93,7 @@ void setup_battery(Window *window)
     text_layer_set_text_color(s_battery_layer, time_color);
     text_layer_set_background_color(s_battery_layer, GColorClear);
     text_layer_set_font(s_battery_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
-    text_layer_set_text_alignment(s_battery_layer, GTextAlignmentLeft);
+    text_layer_set_text_alignment(s_battery_layer, BAT_ALIGN);
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
     text_layer_set_text(s_battery_layer, MAX_BAT_STR);
 
@@ -202,7 +202,7 @@ void main_window_load(Window *window) {
     // Apply to TextLayer
     text_layer_set_font(s_time_layer, s_time_font);
     /* Consider GTextAlignmentLeft (with monospaced font) in cases where colon is proportional */
-    text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
+    text_layer_set_text_alignment(s_time_layer, TIME_ALIGN);
 
     // Add it as a child layer to the Window's root layer
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
@@ -300,9 +300,8 @@ void in_recv_handler(DictionaryIterator *iterator, void *context)
 
 void init()
 {
-    time_color = COLOR_FALLBACK(GColorBlue, GColorWhite);
-    //background_color = COLOR_FALLBACK(GColorCyan, GColorBlack); /* Start of Pebble Time ONLY background color support */
-    background_color = COLOR_FALLBACK(GColorBlack, GColorBlack);
+    time_color = DEFAULT_TIME_COLOR;
+    background_color = DEFAULT_BACKGROUND_COLOR;
 
 #ifdef PBL_PLATFORM_BASALT
     /* TODO refactor */

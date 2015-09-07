@@ -10,8 +10,10 @@ TextLayer *s_battery_layer=NULL;
 TextLayer *s_bluetooth_layer=NULL;
 
 GFont       s_time_font;
+#ifdef BG_IMAGE
 BitmapLayer *s_background_layer=NULL;
 GBitmap     *s_background_bitmap=NULL;
+#endif /* BG_IMAGE */
 /* For colors, see http://developer.getpebble.com/tools/color-picker/#0000FF */
 GColor       time_color;  /* NOTE used for date too */
 GColor       background_color;
@@ -203,6 +205,7 @@ void update_time() {
 }
 
 void main_window_load(Window *window) {
+#ifdef BG_IMAGE
     Layer *window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
 
@@ -217,10 +220,13 @@ void main_window_load(Window *window) {
 #elif PBL_PLATFORM_BASALT
      bitmap_layer_set_compositing_mode(s_background_layer, GCompOpSet);
 #endif
+#endif /* BG_IMAGE */
 
     window_set_background_color(window, background_color);
 
+#ifdef BG_IMAGE
     layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_background_layer));
+#endif /* BG_IMAGE */
 
     // Create time TextLayer
     s_time_layer = text_layer_create(CLOCK_POS);
@@ -263,11 +269,13 @@ void main_window_unload(Window *window) {
     fonts_unload_custom_font(s_time_font);
 #endif /* FONT_NAME */
 
+#ifdef BG_IMAGE
     /* Destroy GBitmap */
     gbitmap_destroy(s_background_bitmap);
 
     /* Destroy BitmapLayer */
     bitmap_layer_destroy(s_background_layer);
+#endif /* BG_IMAGE */
 
     /* Destroy TextLayers */
     text_layer_destroy(s_time_layer);
@@ -370,15 +378,15 @@ void init()
 
     // Set handlers to manage the elements inside the Window
     window_set_window_handlers(s_main_window, (WindowHandlers) {
-                                   .load = main_window_load,
-                                   .unload = main_window_unload
+                                   .load = MAIN_WINDOW_LOAD,
+                                   .unload = MAIN_WINDOW_UNLOAD
                                });
 
     // Show the Window on the watch, with animated=true
     window_stack_push(s_main_window, true);
 
     /* Register events; TickTimerService, Battery */
-    tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+    tick_timer_service_subscribe(MINUTE_UNIT, TICK_HANDLER);
 #ifdef DEBUG_TIME
     tick_timer_service_subscribe(SECOND_UNIT, debug_tick_handler);
 #endif /* DEBUG_TIME */

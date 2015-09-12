@@ -13,6 +13,12 @@
     "resources": {
         "media": [
             {
+                "characterRegex": "[0-9:]",
+                "file": "fonts/jupiter.ttf",
+                "name": "FONT_JUPITER_60",
+                "type": "font"
+            },
+            {
                 "file": "images/n7_logo_icon_c_pebble_mono.png",
                 "menuIcon": true,
                 "name": "IMAGE_ICON",
@@ -22,12 +28,6 @@
                 "file": "images/n7logo.png",
                 "name": "IMAGE_N7LOGO",
                 "type": "png"
-            },
-            {
-                "characterRegex": "[0-9:]",
-                "file": "fonts/jupiter.ttf",
-                "name": "FONT_JUPITER_60",
-                "type": "font"
             }
         ]
     },

@@ -8,10 +8,16 @@
         "configurable"
     ],
     "companyName": "clach04",
-    "longName": "Jupiter Mass Xen",
+    "longName": "DJupiter Mass",
     "projectType": "native",
     "resources": {
         "media": [
+            {
+                "characterRegex": "[0-9:]",
+                "file": "fonts/ISL_Jupiter_Alphabot_Xen.ttf",
+                "name": "FONT_JUPITER_ALPHABOT_XEN_75",
+                "type": "font"
+            },
             {
                 "file": "images/n7_logo_icon_c_pebble_mono.png",
                 "menuIcon": true,
@@ -22,17 +28,11 @@
                 "file": "images/n7logo.png",
                 "name": "IMAGE_N7LOGO",
                 "type": "png"
-            },
-            {
-                "characterRegex": "[0-9:]",
-                "file": "fonts/ISL_Jupiter_Alphabot_Xen.ttf",
-                "name": "FONT_JUPITER_ALPHABOT_XEN_75",
-                "type": "font"
             }
         ]
     },
     "sdkVersion": "3",
-    "shortName": "JupiterMassXen",
+    "shortName": "DJupiterMass",
     "targetPlatforms": [
         "aplite",
         "basalt"

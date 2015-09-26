@@ -12,3 +12,9 @@
 #define BT_POS GRect(0, 120, 144, 168) /* probably taller than really needed */
 #define DATE_POS GRect(0, 140, 144, 168) /* probably taller than really needed */
 #define BAT_POS GRect(0, 140, 144, 168) /* probably taller than really needed */
+
+/* for screen shots and font testing
+#define DEBUG_TIME
+#define DEBUG_TIME_SCREENSHOT
+//#define DEBUG_TIME_PAUSE 2000
+*/

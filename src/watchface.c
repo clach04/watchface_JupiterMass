@@ -1,6 +1,11 @@
 #include <pebble.h>
 #include "watchface.h"
 
+#ifdef USE_SHADOW_TIME_EFFECT
+#include "effect_layer.h"  /* from https://github.com/ygalanter/EffectLayer */
+#endif /* USE_SHADOW_TIME_EFFECT */
+
+
 Window    *main_window=NULL;
 TextLayer *time_layer=NULL;
 TextLayer *date_layer=NULL;
@@ -26,12 +31,20 @@ bool bluetooth_state = false;
 char * debug_time_list[] = {
     "00:00",
     "01:01",
+    "01:23",
+    "04:56",
+    "07:58",
+    "07:59",
+    "05:26",
+    "07:48",
+    "09:23",
     "11:11",
     "12:34",
     "22:22",
     "23:50",
-    "25:55",
+    "23:55",
     /* 12 hour format withOUT leading zero, or space */
+    "12:12",
     "1:01",
     "8:55",
     /* 12 hour format withOUT leading zero, with  space */
@@ -40,6 +53,41 @@ char * debug_time_list[] = {
     NULL
 };
 #endif /* DEBUG_TIME */
+
+#ifdef USE_SHADOW_TIME_EFFECT
+static EffectLayer* effect_layer=NULL;
+static EffectOffset effect_offset;
+
+
+void setup_effects(Window *window)
+{
+    //effect_layer = effect_layer_create(GRect(0, 0, 144, 168)); // will cover entire screen
+    effect_layer = effect_layer_create(CLOCK_POS);
+
+    effect_offset.orig_color = time_color;
+    effect_offset.offset_color = background_color;
+    effect_offset.offset_y = 2;
+    effect_offset.offset_x = 2;
+
+    effect_layer_add_effect(effect_layer, effect_outline, &effect_offset);
+    /* Other effect examples */
+    //effect_layer_add_effect(effect_layer, effect_shadow, &effect_offset);
+
+    //effect_layer_add_effect(effect_layer, effect_invert, NULL);
+    //effect_layer_add_effect(effect_layer, effect_invert_bw_only, NULL);
+    //effect_layer_add_effect(effect_layer, effect_rotate_90_degrees, (void *)true); // rotates 90 degrees counterclockwise
+
+    layer_add_child(window_get_root_layer(window), effect_layer_get_layer(effect_layer));
+}
+
+void cleanup_effects()
+{
+    if (effect_layer)
+    {
+        effect_layer_destroy(effect_layer);
+    }
+}
+#endif /* USE_SHADOW_TIME_EFFECT */
 
 void handle_bluetooth(bool connected)
 {
@@ -66,7 +114,7 @@ void setup_bluetooth(Window *window)
     bluetooth_layer = text_layer_create(BT_POS);
     text_layer_set_text_color(bluetooth_layer, time_color);
     text_layer_set_background_color(bluetooth_layer, GColorClear);
-    text_layer_set_font(bluetooth_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+    text_layer_set_font(bluetooth_layer, fonts_get_system_font(FONT_BT_SYSTEM_NAME));
     text_layer_set_text_alignment(bluetooth_layer, BT_ALIGN);
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(bluetooth_layer));
     text_layer_set_text(bluetooth_layer, "");
@@ -111,7 +159,7 @@ void setup_battery(Window *window)
     battery_layer = text_layer_create(BAT_POS);
     text_layer_set_text_color(battery_layer, time_color);
     text_layer_set_background_color(battery_layer, GColorClear);
-    text_layer_set_font(battery_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+    text_layer_set_font(battery_layer, fonts_get_system_font(FONT_BAT_SYSTEM_NAME));
     text_layer_set_text_alignment(battery_layer, BAT_ALIGN);
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(battery_layer));
     text_layer_set_text(battery_layer, MAX_BAT_STR);
@@ -142,7 +190,7 @@ void setup_date(Window *window)
     text_layer_set_text(date_layer, MAX_DATE_STR);
 
     /* Apply to TextLayer */
-    text_layer_set_font(date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+    text_layer_set_font(date_layer, fonts_get_system_font(FONT_DATE_SYSTEM_NAME));
     text_layer_set_text_alignment(date_layer, GTextAlignmentRight);
 
     // Add it as a child layer to the Window's root layer
@@ -153,6 +201,50 @@ void cleanup_date()
 {
     text_layer_destroy(date_layer);
 }
+
+/*
+** If bounds is GRectZero then use whole watch screen
+*/
+void setup_bg_image(Window *window, uint32_t resource_id, GRect bounds)
+{
+    // Create GBitmap, then set to created BitmapLayer
+    background_bitmap = gbitmap_create_with_resource(resource_id);
+
+    if (bounds.origin.x == 0 &&
+        bounds.origin.y == 0 &&
+        bounds.size.w == 0 &&
+        bounds.size.h == 0)
+    {
+        bounds = layer_get_bounds(window_get_root_layer(window));
+    }
+    background_layer = bitmap_layer_create(bounds);
+
+    bitmap_layer_set_bitmap(background_layer, background_bitmap);
+
+#ifdef PBL_PLATFORM_APLITE
+     bitmap_layer_set_compositing_mode(background_layer, GCompOpAssign);
+#elif PBL_PLATFORM_BASALT
+     bitmap_layer_set_compositing_mode(background_layer, GCompOpSet);
+#endif
+
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(background_layer));
+}
+
+void cleanup_bg_image()
+{
+    /* Destroy GBitmap */
+    if (background_bitmap)
+    {
+        gbitmap_destroy(background_bitmap);
+    }
+
+    /* Destroy BitmapLayer */
+    if (background_layer)
+    {
+        bitmap_layer_destroy(background_layer);
+    }
+}
+
 
 void update_time() {
     // Get a tm structure
@@ -166,12 +258,16 @@ void update_time() {
     {
         static int     str_counter=0;
 
-        strcpy(buffer, debug_time_list[str_counter]);
-        str_counter++;
-        if (debug_time_list[str_counter] == NULL)
-        {
-            str_counter = 0;
-        }
+        #ifdef DEBUG_TIME_SCREENSHOT
+            strcpy(buffer, debug_time_list[3]);
+        #else
+            strcpy(buffer, debug_time_list[str_counter]);
+            str_counter++;
+            if (debug_time_list[str_counter] == NULL)
+            {
+                str_counter = 0;
+            }
+        #endif /* DEBUG_TIME_SCREENSHOT */
     }
 #else
     {
@@ -192,38 +288,27 @@ void update_time() {
     }
 #endif /* DEBUG_TIME */
 
+#ifndef NO_DATE
     /* Update the date only when the day changes */
     if (last_day != tick_time->tm_mday)
     {
         update_date(tick_time);
     }
+#endif /* NO_DATE */
 
     // Display this time on the TextLayer
     text_layer_set_text(time_layer, buffer);
+
+#ifdef DEBUG_TIME_PAUSE
+    psleep(DEBUG_TIME_PAUSE);
+#endif /* DEBUG_TIME_PAUSE */
 }
 
 void main_window_load(Window *window) {
-#ifdef BG_IMAGE
-    Layer *window_layer = window_get_root_layer(window);
-    GRect bounds = layer_get_bounds(window_layer);
-
-    // Create GBitmap, then set to created BitmapLayer
-    background_bitmap = gbitmap_create_with_resource(BG_IMAGE);
-    
-    background_layer = bitmap_layer_create(bounds);
-    bitmap_layer_set_bitmap(background_layer, background_bitmap);
-
-#ifdef PBL_PLATFORM_APLITE
-     bitmap_layer_set_compositing_mode(background_layer, GCompOpAssign);
-#elif PBL_PLATFORM_BASALT
-     bitmap_layer_set_compositing_mode(background_layer, GCompOpSet);
-#endif
-#endif /* BG_IMAGE */
-
     window_set_background_color(window, background_color);
 
 #ifdef BG_IMAGE
-    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(background_layer));
+    setup_bg_image(window, BG_IMAGE, BG_IMAGE_GRECT);
 #endif /* BG_IMAGE */
 
     // Create time TextLayer
@@ -247,20 +332,43 @@ void main_window_load(Window *window) {
     // Add it as a child layer to the Window's root layer
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(time_layer));
 
+#ifndef NO_DATE
     setup_date(window);
+#endif /* NO_DATE */
+#ifndef NO_BATTERY
     setup_battery(window);
+#endif /* NO_BATTERY */
+#ifndef NO_BLUETOOTH
     setup_bluetooth(window);
+#endif /* NO_BLUETOOTH */
+
+#ifdef USE_SHADOW_TIME_EFFECT
+    setup_effects(window);
+#endif /* USE_SHADOW_TIME_EFFECT */
 
     /* Make sure the time is displayed from the start */
     update_time();
+
+#ifndef NO_BATTERY
     /* Ensure battery status is displayed from the start */
     handle_battery(battery_state_service_peek());
+#endif /* NO_BATTERY */
 }
 
 void main_window_unload(Window *window) {
+#ifdef USE_SHADOW_TIME_EFFECT
+    cleanup_effects();
+#endif /* USE_SHADOW_TIME_EFFECT */
+
+#ifndef NO_BLUETOOTH
     cleanup_bluetooth();
+#endif /* NO_BLUETOOTH */
+#ifndef NO_BATTERY
     cleanup_battery();
+#endif /* NO_BATTERY */
+#ifndef NO_DATE
     cleanup_date();
+#endif /* NO_DATE */
 
 #ifdef FONT_NAME
     /* Unload GFonts */
@@ -268,11 +376,7 @@ void main_window_unload(Window *window) {
 #endif /* FONT_NAME */
 
 #ifdef BG_IMAGE
-    /* Destroy GBitmap */
-    gbitmap_destroy(background_bitmap);
-
-    /* Destroy BitmapLayer */
-    bitmap_layer_destroy(background_layer);
+    cleanup_bg_image();
 #endif /* BG_IMAGE */
 
     /* Destroy TextLayers */
@@ -386,7 +490,9 @@ void init()
     /* Register events; TickTimerService, Battery */
     tick_timer_service_subscribe(MINUTE_UNIT, TICK_HANDLER);
 #ifdef DEBUG_TIME
-    tick_timer_service_subscribe(SECOND_UNIT, debug_tick_handler);
+    #ifndef DEBUG_TIME_SCREENSHOT
+        tick_timer_service_subscribe(SECOND_UNIT, DEBUG_TICK_HANDLER);
+    #endif /* DEBUG_TIME_SCREENSHOT */
 #endif /* DEBUG_TIME */
 
     /* TODO use AppSync instead? */

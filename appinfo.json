@@ -8,14 +8,14 @@
         "configurable"
     ],
     "companyName": "clach04",
-    "longName": "Jupiter Mass",
+    "longName": "DJupiter Mass",
     "projectType": "native",
     "resources": {
         "media": [
             {
                 "characterRegex": "[0-9:]",
-                "file": "fonts/jupiter.ttf",
-                "name": "FONT_JUPITER_60",
+                "file": "fonts/ISL_Jupiter_Alphabot_Xen.ttf",
+                "name": "FONT_JUPITER_ALPHABOT_XEN_75",
                 "type": "font"
             },
             {
@@ -32,12 +32,12 @@
         ]
     },
     "sdkVersion": "3",
-    "shortName": "JupiterMass",
+    "shortName": "DJupiterMass",
     "targetPlatforms": [
         "aplite",
         "basalt"
     ],
-    "uuid": "2eaca376-eeba-4b8e-939e-2502aea18fb0",
+    "uuid": "0ae8bb7b-9ecd-4e71-8fd8-7877db474401",
     "versionLabel": "0.5",
     "watchapp": {
         "watchface": true

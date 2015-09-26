@@ -1,8 +1,14 @@
 # ![](resources/images/n7_logo_icon_c_pebble_mono~color.png) Jupiter Mass - a Pebble watchface
 
-<img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/basalt_no_bluetooth.png" alt="Pebble Time color screenshot showing bluetooth disconnected"> 
-<img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/basalt_brightgreen.png" alt="Pebble Time color screenshot showing Bright Green color for date and time"> 
-<img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/bw_aplite_charging.png" alt="OG Pebble screenshot showing battery is charging"> 
+NOTE newer version (with different font) at https://github.com/clach04/watchface_JupiterMass
+
+![](screenshots/basalt_no_bluetooth.png)
+![](screenshots/basalt_80pc.png)
+![](screenshots/basalt_charging.png)
+![](screenshots/basalt_brightgreen.png)
+![](screenshots/screenshots/bw_aplite_charging.png)
+![](screenshots/bw_aplite_80pc.png)
+
 
 
 Basic digital watch face for the Pebble smartwatch. Features:

@@ -24,4 +24,5 @@ Acknowledgements
   * N7 Logo Vector by Karlika (http://karlika.deviantart.com/art/Mass-Effect-Vector-Pack-178422616)
   * html/js for color configuration based on code by https://github.com/rgarth and Slate https://github.com/pebble/slate
 
-Store URL https://apps.getpebble.com/en_US/application/556a4727da4c418e7800006f
+Store URL https://apps.getpebble.com/en_US/application/5606177b1ba070a986000032
+(previous version https://apps.getpebble.com/en_US/application/556a4727da4c418e7800006f)

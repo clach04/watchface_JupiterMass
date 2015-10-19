@@ -13,10 +13,9 @@
     "resources": {
         "media": [
             {
-                "characterRegex": "[0-9:]",
-                "file": "fonts/ISL_Jupiter_Alphabot_Xen.ttf",
-                "name": "FONT_JUPITER_ALPHABOT_XEN_75",
-                "type": "font"
+                "file": "images/n7logo.png",
+                "name": "IMAGE_N7LOGO",
+                "type": "png"
             },
             {
                 "file": "images/n7_logo_icon_c_pebble_mono.png",
@@ -25,9 +24,10 @@
                 "type": "png"
             },
             {
-                "file": "images/n7logo.png",
-                "name": "IMAGE_N7LOGO",
-                "type": "png"
+                "characterRegex": "[0-9:]",
+                "file": "fonts/ISL_Jupiter_Alphabot_Xen.ttf",
+                "name": "FONT_JUPITER_ALPHABOT_XEN_75",
+                "type": "font"
             }
         ]
     },
@@ -35,7 +35,8 @@
     "shortName": "JupiterMassXen",
     "targetPlatforms": [
         "aplite",
-        "basalt"
+        "basalt",
+        "chalk"
     ],
     "uuid": "0ae8bb7b-9ecd-4e71-8fd8-7877db474401",
     "versionLabel": "0.6",

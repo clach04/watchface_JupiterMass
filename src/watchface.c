@@ -260,6 +260,7 @@ void update_time() {
 
         #ifdef DEBUG_TIME_SCREENSHOT
             strcpy(buffer, debug_time_list[3]);
+            light_enable(true);  // mostly for emulator
         #else
             strcpy(buffer, debug_time_list[str_counter]);
             str_counter++;
@@ -420,6 +421,7 @@ void in_recv_handler(DictionaryIterator *iterator, void *context)
                 time_color = COLOR_FALLBACK(GColorFromHEX(config_time_color), GColorWhite);
                 text_layer_set_text_color(time_layer, time_color);
                 text_layer_set_text_color(date_layer, time_color);
+                text_layer_set_text_color(battery_layer, time_color);
                 text_layer_set_text_color(bluetooth_layer, time_color);
                 break;
 

@@ -15,7 +15,7 @@ Basic digital watch face for the Pebble smartwatch. Features:
   * Includes battery status
   * Supports Aplite (original Pebble), Basalt (Pebble Time), and Chalk (Pebble Round)
   * Displays when Bluetooth connection is lost and optionally vibrates
-  * Configurable color for time and date - Basalt (Pebble Time) ONLY
+  * Configurable color for time and date - Color devices ONLY
 
 Acknowledgements
 

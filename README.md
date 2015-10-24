@@ -7,12 +7,13 @@
 <img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/basalt_brightgreen.png" alt="Pebble Time color screenshot showing Bright Green color for date and time"> 
 <img src="https://raw.githubusercontent.com/clach04/watchface_JupiterMass/master/screenshots/bw_aplite_charging.png" alt="OG Pebble screenshot showing battery is charging"> 
 ![](screenshots/bw_aplite_80pc.png)
+![](screenshots/chalk_round.png)
 
 
 Basic digital watch face for the Pebble smartwatch. Features:
   * Updates once per minute
   * Includes battery status
-  * Supports Aplite (original Pebble) and Basalt (Pebble Time)
+  * Supports Aplite (original Pebble), Basalt (Pebble Time), and Chalk (Pebble Round)
   * Displays when Bluetooth connection is lost and optionally vibrates
   * Configurable color for time and date - Basalt (Pebble Time) ONLY
 

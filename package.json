@@ -1,0 +1,51 @@
+{
+    "author": "clach04",
+    "dependencies": {},
+    "keywords": [],
+    "name": "jupitermassxen",
+    "pebble": {
+        "capabilities": [
+            "configurable"
+        ],
+        "displayName": "Jupiter Mass Xen",
+        "enableMultiJS": false,
+        "messageKeys": {
+            "KEY_BACKGROUND_COLOR": 2,
+            "KEY_TIME_COLOR": 0,
+            "KEY_VIBRATE_ON_DISCONNECT": 1
+        },
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "images/n7logo.png",
+                    "name": "IMAGE_N7LOGO",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/n7_logo_icon_c_pebble_mono.png",
+                    "menuIcon": true,
+                    "name": "IMAGE_ICON",
+                    "type": "bitmap"
+                },
+                {
+                    "characterRegex": "[0-9:]",
+                    "file": "fonts/ISL_Jupiter_Alphabot_Xen.ttf",
+                    "name": "FONT_JUPITER_ALPHABOT_XEN_75",
+                    "type": "font"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk"
+        ],
+        "uuid": "0ae8bb7b-9ecd-4e71-8fd8-7877db474401",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "0.6.0"
+}

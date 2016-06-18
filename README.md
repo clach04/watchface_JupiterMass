@@ -23,7 +23,7 @@ Acknowledgements
       * ISL Jupiter - http://www.dafont.com/isl-jupiter.font
       * ISL AlphaBot Xen- http://www.dafont.com/isl-alphabot-xen.font)
       * Combined into https://github.com/clach04/watchface_JupiterMass/blob/ba772ee72902ae3a6c24d43cb260fe4a7ec6744c/resources/fonts/ISL_Jupiter_Alphabot_Xen.sfd
-  * N7 Logo Vector by Karlika (http://karlika.deviantart.com/art/Mass-Effect-Vector-Pack-178422616) - updated and available in https://github.com/clach04/watchface_JupiterMass/blob/ba772ee72902ae3a6c24d43cb260fe4a7ec6744c/resources/images/n7_logo.svg
+  * N7 Logo Vector by Karlika (http://karlika.deviantart.com/art/Mass-Effect-Vector-Pack-178422616) - updated and available in https://github.com/clach04/watchface_JupiterMass/blob/ba772ee72902ae3a6c24d43cb260fe4a7ec6744c/resources/images/n7_logo.svg https://github.com/clach04/watchface_JupiterMass/blob/4322583fa078ed716ba754387259c81fb604e38c/resources/images/n7_logo.svg
   * html/js for color configuration based on code by https://github.com/rgarth and Slate https://github.com/pebble/slate
 
 Store URL https://apps.getpebble.com/en_US/application/5606177b1ba070a986000032

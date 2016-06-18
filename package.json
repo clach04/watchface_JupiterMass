@@ -1,6 +1,8 @@
 {
     "author": "clach04",
-    "dependencies": {},
+    "dependencies": {
+        "pebble-clay": "^1.0.1"
+    },
     "keywords": [],
     "name": "jupitermassxen",
     "pebble": {
@@ -8,12 +10,13 @@
             "configurable"
         ],
         "displayName": "Jupiter Mass Xen",
-        "enableMultiJS": false,
-        "messageKeys": {
-            "KEY_BACKGROUND_COLOR": 2,
-            "KEY_TIME_COLOR": 0,
-            "KEY_VIBRATE_ON_DISCONNECT": 1
-        },
+        "enableMultiJS": true,
+        "messageKeys": [
+            "TIME_COLOR",
+            "VIBRATE_ON_DISCONNECT",
+            "BACKGROUND_COLOR",
+            "MAJOR_VERSION"
+        ],
         "projectType": "native",
         "resources": {
             "media": [

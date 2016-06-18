@@ -30,6 +30,11 @@
 #endif /* BLUETOOTH_DISCONNECTED_STR */
 
 #ifndef DATE_FMT_STR
+/*
+** DATE_FMT_STR format for date, passed to strftime()
+** https://developer.getpebble.com/docs/c/Standard_C/Time/#strftime
+** See http://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html for more details
+*/
 #define DATE_FMT_STR "%a, %d %b"  /* TODO review %d for day */
 #define MAX_DATE_STR "Thu, 00 Aug"  /* if custom version of DATE_FMT_STR is set, MAX_DATE_STR  needs to be updated too */
 #endif /* DATE_FMT_STR */
@@ -103,8 +108,12 @@
 extern Window    *main_window;
 extern TextLayer *time_layer;
 extern TextLayer *date_layer;
+#ifndef DRAW_BATTERY
 extern TextLayer *battery_layer;
-extern TextLayer *bluetooth_layer;
+#else
+extern Layer *battery_layer;
+#endif /* DRAW_BATTERY */
+extern TextLayer *bluetooth_tlayer;
 
 extern GFont       time_font;
 extern BitmapLayer *background_layer;
@@ -135,3 +144,26 @@ extern void tick_handler(struct tm *tick_time, TimeUnits units_changed);
 extern void in_recv_handler(DictionaryIterator *iterator, void *context);
 extern void init();
 extern void deinit();
+
+#if defined(PBL_HEALTH)
+extern TextLayer *health_tlayer;
+
+#ifndef HEALTH_ALIGN
+    #define HEALTH_ALIGN GTextAlignmentCenter
+#endif
+
+#ifndef HEALTH_FMT_STR
+    #define HEALTH_FMT_STR "%d steps today"
+    #define MAX_HEALTH_STR "123456 steps today"   /* update to match HEALTH_FMT_STR */
+#endif /* HEALTH_FMT_STR */
+
+#ifndef HEALTH_POS
+    #ifndef USE_HEALTH
+        #define HEALTH_POS GRect(50, 50, 144, 168)
+    #endif /* USE_HEALTH */
+#endif /* HEALTH_POS */
+
+void setup_health(Window *window);
+void update_health();
+void cleanup_health();
+#endif /* PBL_HEALTH */
